@@ -10,7 +10,7 @@ public class Bus implements Runnable {
     private final Log log;
 
     public Bus(String id, String airport, Log log) {
-        this.id = "Bus-" + id;
+        this.id = "B-" + id;
         this.airport = airport;
         this.log = log;
     }
@@ -30,9 +30,9 @@ public class Bus implements Runnable {
     // The bus arrives at the downtown bus stop.
     private void arriveDowntown() {
         // Print in console.
-        System.out.println(this.getID() + " has arrived downtown.");
+        System.out.println(this.getID() + " arrived downtown.");
         // Log event.
-        log.logEvent(this.getAirport(), this.getID() + " has arrived downtown.");
+        log.logEvent(this.getAirport(), this.getID() + " arrived downtown.");
 
         // The bus waits at the stop 2-5 seconds.
         try {
@@ -46,16 +46,16 @@ public class Bus implements Runnable {
     private void boardPassengers() {
         // Using ThreadLocalRandom for optimization.
         this.numPassengers = ThreadLocalRandom.current().nextInt(0, 51);
-        System.out.println(this.getID() + " has picked up [" + this.getNumPassengers() + "] passengers.");
-        log.logEvent(this.getAirport(), this.getID() + " has picked up [" + this.getNumPassengers() + "] passengers.");
+        System.out.println(this.getID() + " picked up [" + this.getNumPassengers() + "] passengers.");
+        log.logEvent(this.getAirport(), this.getID() + " picked up [" + this.getNumPassengers() + "] passengers.");
     }
 
     // The bus heads to the airport.
     private void goToAirport() {
         // Print in console.
-        System.out.println(this.getID() + " is heading to " + this.getAirport() + " airport.");
+        System.out.println(this.getID() + " heading to " + this.getAirport() + " airport.");
         // Log event.
-        log.logEvent(this.getAirport(), this.getID() + " is heading to " + this.getAirport() + " airport.");
+        log.logEvent(this.getAirport(), this.getID() + " heading to " + this.getAirport() + " airport.");
 
         // The bus takes 5-10 seconds to get to the airport.
         try {
@@ -68,9 +68,9 @@ public class Bus implements Runnable {
     // The bus arrives at the airport.
     private void arriveAirport() {
         // Print in console.
-        System.out.println(this.getID() + " has arrived to " + this.getAirport() + " airport.");
+        System.out.println(this.getID() + " arrived to " + this.getAirport() + " airport.");
         // Log event.
-        log.logEvent(this.getAirport(), this.getID() + " has arrived to " + this.getAirport() + " airport.");
+        log.logEvent(this.getAirport(), this.getID() + " arrived to " + this.getAirport() + " airport.");
 
         // TODO: add passengers to the airport system.
         // The bus waits at the airport for passengers for 2-5 seconds.
@@ -87,9 +87,9 @@ public class Bus implements Runnable {
 
     private void goToDowntown() {
         // Print in console.
-        System.out.println(this.getID() + " is heading downtown.");
+        System.out.println(this.getID() + " heading downtown.");
         // Log event.
-        log.logEvent(this.getAirport(), this.getID() + " is heading downtown.");
+        log.logEvent(this.getAirport(), this.getID() + " heading downtown.");
 
         // The bus takes 5-10 seconds to get downtown.
         try {

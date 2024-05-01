@@ -37,8 +37,11 @@ public class Log {
                     banner = true;
                 }
 
-                // Log the event with the timestamp
-                out.println(timeStamp + " - " + airport + " - " + event);
+                // Modify the airport variable to have only the first 3 letters in upper case.
+                String modifiedAirport = airport.substring(0, 3).toUpperCase();
+
+                // Log the event.
+                out.println(timeStamp + " - " + modifiedAirport + " - " + event);
 
             } catch (IOException e) {
                 System.err.println("There was a problem writing to the log file");

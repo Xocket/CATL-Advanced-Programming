@@ -25,13 +25,12 @@ public class UserInterface extends javax.swing.JFrame {
         labelMadridAirport = new javax.swing.JLabel();
         labelBarcelonaAirport = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        labelTaxiAreaMadrid = new javax.swing.JLabel();
         labelParkingAreaMadrid = new javax.swing.JLabel();
         labelParkingAreaBarcelona = new javax.swing.JLabel();
         labelMaintenanceBarcelona = new javax.swing.JLabel();
         labelMaintenanceMadrid = new javax.swing.JLabel();
-        labelHangarBarcelona = new javax.swing.JLabel();
         labelHangarMadrid = new javax.swing.JLabel();
+        labelHangarBarcelona = new javax.swing.JLabel();
         labelNumberPassengersMadridAirport = new javax.swing.JLabel();
         labelNumberPassengersBarcelonaAirport = new javax.swing.JLabel();
         labelGate1Madrid = new javax.swing.JLabel();
@@ -46,6 +45,7 @@ public class UserInterface extends javax.swing.JFrame {
         labelGate4Barcelona = new javax.swing.JLabel();
         labelGate5Barcelona = new javax.swing.JLabel();
         labelGate6Barcelona = new javax.swing.JLabel();
+        labelTaxiAreaMadrid = new javax.swing.JLabel();
         labelTaxiAreaBarcelona = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         pauseButton1 = new javax.swing.JButton();
@@ -121,13 +121,6 @@ public class UserInterface extends javax.swing.JFrame {
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 90, 10, 900));
 
-        labelTaxiAreaMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelTaxiAreaMadrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelTaxiAreaMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTaxiAreaMadrid.setText("Taxi Area");
-        labelTaxiAreaMadrid.setFocusable(false);
-        jPanel1.add(labelTaxiAreaMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 130, 30));
-
         labelParkingAreaMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         labelParkingAreaMadrid.setForeground(new java.awt.Color(255, 255, 255));
         labelParkingAreaMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -156,19 +149,19 @@ public class UserInterface extends javax.swing.JFrame {
         labelMaintenanceMadrid.setFocusable(false);
         jPanel1.add(labelMaintenanceMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 130, 30));
 
-        labelHangarBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelHangarBarcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelHangarBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelHangarBarcelona.setText("Hangar");
-        labelHangarBarcelona.setFocusable(false);
-        jPanel1.add(labelHangarBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 280, 70, 30));
-
         labelHangarMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         labelHangarMadrid.setForeground(new java.awt.Color(255, 255, 255));
         labelHangarMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelHangarMadrid.setText("Hangar");
         labelHangarMadrid.setFocusable(false);
         jPanel1.add(labelHangarMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, 70, 30));
+
+        labelHangarBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelHangarBarcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelHangarBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelHangarBarcelona.setText("Hangar");
+        labelHangarBarcelona.setFocusable(false);
+        jPanel1.add(labelHangarBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 280, 70, 30));
 
         labelNumberPassengersMadridAirport.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         labelNumberPassengersMadridAirport.setForeground(new java.awt.Color(255, 255, 255));
@@ -267,6 +260,13 @@ public class UserInterface extends javax.swing.JFrame {
         labelGate6Barcelona.setText("Gate 6");
         labelGate6Barcelona.setFocusable(false);
         jPanel1.add(labelGate6Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 480, 130, 30));
+
+        labelTaxiAreaMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelTaxiAreaMadrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelTaxiAreaMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTaxiAreaMadrid.setText("Taxi Area");
+        labelTaxiAreaMadrid.setFocusable(false);
+        jPanel1.add(labelTaxiAreaMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 130, 30));
 
         labelTaxiAreaBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         labelTaxiAreaBarcelona.setForeground(new java.awt.Color(255, 255, 255));
