@@ -1,46 +1,60 @@
 package com.catl.code;
 
 import java.io.*;
-import java.util.concurrent.locks.*;
+import java.util.concurrent.*;
 
 public class Log {
 
-    private final ReentrantLock lock = new ReentrantLock();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final String logFolderName = "Log";
     private final String logFileName = "airportEvolution.txt";
+    private final File logDir;
+    private final File logFile;
     private boolean banner = false;
 
+    public Log() {
+        // Initialize the directory and file path once when the Log object is created.
+        String currentDir = System.getProperty("user.dir");
+        logDir = new File(currentDir + File.separator + logFolderName);
+        logFile = new File(logDir, logFileName);
+        // Check if the Log directory exists, if not, create it
+        if (!logDir.exists()) {
+            logDir.mkdirs();
+        }
+        // Add a shutdown hook to handle the executor shutdown
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+    }
+
     public void logEvent(String airport, String event) {
-        lock.lock();
+        executor.submit(() -> {
+            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(logFile, true)))) {
+                // Generate the timestamp as close as possible to the event occurrence
+                String timeStamp = new java.text.SimpleDateFormat("yyyy/MM/dd - HH:mm:ss:SSS").format(new java.util.Date());
+
+                // Print the banner once
+                if (!banner) {
+                    out.println("------------------------------ AIRPORT EVOLUTION ------------------------------\n");
+                    banner = true;
+                }
+
+                // Log the event with the timestamp
+                out.println(timeStamp + " - " + airport + " - " + event);
+
+            } catch (IOException e) {
+                System.err.println("There was a problem writing to the log file");
+            }
+        });
+    }
+
+    public void shutdown() {
+        executor.shutdown();
         try {
-            // Get the current working directory
-            String currentDir = System.getProperty("user.dir");
-            // Create the relative file path for the Log folder
-            File logDir = new File(currentDir + File.separator + logFolderName);
-            File logFile = new File(logDir, logFileName);
-
-            // Check if the Log directory exists, if not, create it
-            if (!logDir.exists()) {
-                logDir.mkdirs();
+            if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
             }
-
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(logFile, true)));
-
-            String timeStamp = new java.text.SimpleDateFormat("yyyy/MM/dd - HH:mm:ss:SSS").format(new java.util.Date());
-
-            if (!banner) {
-                out.println("------------------------------ AIRPORT EVOLUTION ------------------------------\n");
-                banner = true;
-            }
-
-            out.println(timeStamp + " - " + airport + " - " + event);
-            out.close();
-
-        } catch (IOException e) {
-            System.err.println("There was a problem writing to the log file");
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
+        } catch (InterruptedException ex) {
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
         }
     }
 }
