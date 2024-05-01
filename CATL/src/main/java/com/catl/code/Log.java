@@ -8,6 +8,7 @@ public class Log {
     private final ReentrantLock lock = new ReentrantLock();
     private final String logFolderName = "Log";
     private final String logFileName = "airportEvolution.txt";
+    private boolean banner = false;
 
     public void logEvent(String airport, String event) {
         lock.lock();
@@ -23,11 +24,15 @@ public class Log {
                 logDir.mkdirs();
             }
 
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(logFile, false)));
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(logFile, true)));
 
             String timeStamp = new java.text.SimpleDateFormat("yyyy/MM/dd - HH:mm:ss:SSS").format(new java.util.Date());
 
-            out.println("------------------------------ AIRPORT EVOLUTION ------------------------------\n");
+            if (!banner) {
+                out.println("------------------------------ AIRPORT EVOLUTION ------------------------------\n");
+                banner = true;
+            }
+
             out.println(timeStamp + " - " + airport + " - " + event);
             out.close();
 

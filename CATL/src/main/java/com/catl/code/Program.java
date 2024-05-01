@@ -9,11 +9,17 @@ public class Program {
 
         // Create Log object to store events.
         Log log = new Log();
-        log.logEvent("bruh", "second bruh");
 
         // Create both airports.
         Airport madridAirport = new Airport();
         Airport barcelonaAirport = new Airport();
+
+        // Create an instance of BusDispatcher.
+        BusDispatcher busDispatcher = new BusDispatcher(log);
+
+        // Create a new thread with the instance of BusDispatcher and start it.
+        Thread busDispatcherThread = new Thread(busDispatcher);
+        busDispatcherThread.start();
 
     }
 }
