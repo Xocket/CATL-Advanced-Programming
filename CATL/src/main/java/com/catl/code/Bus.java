@@ -4,8 +4,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Bus implements Runnable {
 
-    private String id;
-    private String airport;
+    private final String id;
+    private final String airport;
     private int numPassengers;
     private final Log log;
 
@@ -103,16 +103,8 @@ public class Bus implements Runnable {
         return id;
     }
 
-    public void setID(String id) {
-        this.id = id;
-    }
-
     public String getAirport() {
         return airport;
-    }
-
-    public void setAirport(String airport) {
-        this.airport = airport;
     }
 
     public int getNumPassengers() {
