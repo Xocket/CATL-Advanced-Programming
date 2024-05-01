@@ -30,7 +30,7 @@ public class BusDispatcher implements Runnable {
             busThread.start();
 
             try {
-                Thread.sleep(ThreadLocalRandom.current().nextInt(5, 10));
+                Thread.sleep(ThreadLocalRandom.current().nextInt(500, 1001));
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Dispatching buses.");
             }
