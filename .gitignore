@@ -30,3 +30,4 @@ nb-configuration.xml
 # Nib files
 *~.nib
 /CATL/target/
+CATL/Log/
