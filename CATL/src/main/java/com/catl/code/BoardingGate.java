@@ -22,6 +22,7 @@ class BoardingGate implements Runnable {
             }
 
             // Process boarding.
+            airplane.getLog().logEvent(airplane.getCurrentAirport().getAirportName(), airplane.getID() + " ATTEMPTING TO BOARD AT " + getGateNumber());
             this.boardPassengers(airplane);
             airplane = null;
         }
@@ -31,9 +32,11 @@ class BoardingGate implements Runnable {
         // Board passengers onto the airplane.
         // Notify the airplane that it has been accepted by a boarding gate.
         synchronized (airplane) {
+            airplane.setIsNotified(true);
             airplane.notify();
             try {
                 // Wait until the airplane finishes boarding passengers.
+                airplane.getLog().logEvent(airplane.getCurrentAirport().getAirportName(), airplane.getID() + " BOARDING!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 airplane.wait();
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Boarding Gate waiting for airplane to finish boarding passengers.");
@@ -49,5 +52,4 @@ class BoardingGate implements Runnable {
     public int getGateNumber() {
         return gateNumber;
     }
-
 }

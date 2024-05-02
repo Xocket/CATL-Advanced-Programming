@@ -34,6 +34,7 @@ public class Hangar {
         return maxSize.get();
     }
 
+    // Returns true if the object that calls it is at the head of the queue.
     public boolean isAtHead(Airplane airplane) {
         return airplaneQueue.peek().equals(airplane);
     }

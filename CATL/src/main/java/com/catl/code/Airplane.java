@@ -15,6 +15,16 @@ public class Airplane implements Runnable {
     private Airport currentAirport;
     private Airport destinationAirport;
 
+    public boolean isNotified() {
+        return isNotified;
+    }
+
+    public void setIsNotified(boolean isNotified) {
+        this.isNotified = isNotified;
+    }
+
+    private volatile boolean isNotified = false;
+
     public Airplane(String id, Airport currentAirport, Airport destinationAirport, Log log) {
         this.id = this.getRandomLetters() + "-" + id;
 
@@ -27,20 +37,18 @@ public class Airplane implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            accessHangar();
-            accessParkingArea();
-            boardPassengers();
-            //accessTaxiArea();
+        accessHangar();
+        accessParkingArea();
+        boardPassengers();
 
-            try {
-                Thread.sleep(100000);
-            } catch (InterruptedException e) {
-                System.out.println("oh shit");
-            }
+        try {
+            Thread.sleep(100000000);
+        } catch (InterruptedException e) {
+        }
 
-            /*
-            
+
+        /*
+            accessTaxiArea();
             takeOff();
             fly();
             land();
@@ -50,8 +58,7 @@ public class Airplane implements Runnable {
 
             // Swaps current and destination airports.
             flightConfiguration();
-             */
-        }
+         */
     }
 
     // Airplane accesses Airport Hangar.
@@ -68,7 +75,6 @@ public class Airplane implements Runnable {
     private synchronized void accessParkingArea() {
         // Wait until this airplane is at the head of the hangar queue.
         while (!this.getCurrentAirport().getHangar().isAtHead(this)) {
-            // Wait for a notification.
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -76,36 +82,37 @@ public class Airplane implements Runnable {
             }
         }
 
-        // Now the airplane is at the head of the queue, it can leave the hangar.
-        this.getCurrentAirport().getHangar().removeAirplane();
-
-        // Notify all waiting threads.
-        notifyAll();
-
         // Print in console.
         System.out.println("Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
         // Log event.
         log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
 
-        // Enters the Parking Area from the Hangar.
-        this.getCurrentAirport().getParkingArea().addAirplane(this);
+        // Now the airplane is at the head of the queue, it can leave the Hangar and enter the Parking Area.
+        this.getCurrentAirport().getParkingArea().addAirplane(this.getCurrentAirport().getHangar().removeAirplane());
+        // Notify all waiting threads.
+        notifyAll();
     }
 
     // TODO: comment this code properly.
     private void boardPassengers() {
+
         // Wait until a boarding gate accepts this airplane.
         synchronized (this) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                System.out.println("ERROR - Boarding passengers.");
+            while (!isNotified) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    System.out.println("ERROR - Boarding passengers.");
+                }
             }
+            isNotified = false;
         }
+        log.logEvent(this.currentAirport.getAirportName(), getID() + " CHECK BEFORE LOOPS!!!!!!!!!!!");
 
         for (int i = 0; i < 3; i++) {
             this.setNumPassengers(this.getCurrentAirport().offloadPassengers(this.getCapacity()));
             try {
-                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
+                Thread.sleep(ThreadLocalRandom.current().nextInt(10, 31));
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Boarding passengers attempts boardPassengers()");
             }
@@ -113,15 +120,18 @@ public class Airplane implements Runnable {
                 break;
             } else {
                 try {
-                    Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(10, 51));
                 } catch (InterruptedException e) {
                     System.out.println("ERROR - Waiting for passengers boardPassengers()");
                 }
             }
         }
 
+        log.logEvent(this.currentAirport.getAirportName(), getID() + " xddddddddddddddddddddddddd FINISHED BOARDING!!!!!!!!!!!");
+
         // Notify the boarding gate that it has finished boarding passengers.
         synchronized (this) {
+            log.logEvent(this.currentAirport.getAirportName(), getID() + " FINISHED BOARDING!!!!!!!!!!!");
             notify();
         }
     }
