@@ -58,9 +58,9 @@ public class Bus implements Runnable {
         this.setNumPassengers(ThreadLocalRandom.current().nextInt(0, 51));
 
         // Print in console.
-        System.out.println(this.getID() + " picked up [" + this.getNumPassengers() + "] passengers.");
+        System.out.println(this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
         // Log event.
-        log.logEvent(this.getAirportName(), this.getID() + " picked up [" + this.getNumPassengers() + "] passengers.");
+        log.logEvent(this.getAirportName(), this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
     }
 
     // The bus heads to the airport.
