@@ -1,10 +1,13 @@
+// Package declaration.
 package com.catl.ui;
 
+// Importing classes.
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
+// User Interface class.
 public class UserInterface extends javax.swing.JFrame {
 
+    // UserInterface class constructor.
     public UserInterface() {
         initComponents();
     }
@@ -474,19 +477,22 @@ public class UserInterface extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // Method to start the User Interface.
     public void startInterface() {
-        // Set the FlatLaf dark look and feel.
         try {
+            // Set the FlatLaf dark look and feel.
             FlatMacDarkLaf.setup();
+
+            // Closes the program gracefully.
+            this.setDefaultCloseOperation(UserInterface.EXIT_ON_CLOSE);
+
         } catch (Exception e) {
             System.out.println("ERROR - Setting up FlatLaf look and feel.");
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UserInterface().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new UserInterface().setVisible(true);
         });
     }
 
