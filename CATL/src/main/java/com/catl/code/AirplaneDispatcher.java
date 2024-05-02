@@ -24,16 +24,15 @@ public class AirplaneDispatcher implements Runnable {
     public void dispatchAirplanes() {
         for (int i = 1; i <= 8000; i++) {
             String id = String.format("%04d", i);
-            String airport;
             if (i % 2 == 0) {
-                airport = "Madrid";
+                Airplane airplane = new Airplane(id, this.getMadridAirport(), this.getBarcelonaAirport(), log);
+                Thread airplaneThread = new Thread(airplane);
+                airplaneThread.start();
             } else {
-                airport = "Barcelona";
+                Airplane airplane = new Airplane(id, this.getBarcelonaAirport(), this.getMadridAirport(), log);
+                Thread airplaneThread = new Thread(airplane);
+                airplaneThread.start();
             }
-
-            Airplane airplane = new Airplane(id, airport, this.getMadridAirport(), this.getBarcelonaAirport(), log);
-            Thread airplaneThread = new Thread(airplane);
-            airplaneThread.start();
 
             try {
                 Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));

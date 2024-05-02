@@ -40,9 +40,9 @@ public class Bus implements Runnable {
     // The bus arrives at the downtown bus stop.
     private void arriveDowntown() {
         // Print in console.
-        System.out.println(this.getID() + " arrived downtown.");
+        System.out.println("Bus " + this.getID() + " arrived downtown.");
         // Log event.
-        log.logEvent(this.getAirportName(), this.getID() + " arrived downtown.");
+        //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " arrived downtown.");
 
         // The bus waits at the stop 2-5 seconds.
         try {
@@ -58,17 +58,17 @@ public class Bus implements Runnable {
         this.setNumPassengers(ThreadLocalRandom.current().nextInt(0, 51));
 
         // Print in console.
-        System.out.println(this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
+        System.out.println("Bus " + this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
         // Log event.
-        log.logEvent(this.getAirportName(), this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
+        //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
     }
 
     // The bus heads to the airport.
     private void goToAirport() {
         // Print in console.
-        System.out.println(this.getID() + " heading to " + this.getAirportName() + " airport.");
+        System.out.println("Bus " + this.getID() + " heading to " + this.getAirportName() + " airport.");
         // Log event.
-        log.logEvent(this.getAirportName(), this.getID() + " heading to " + this.getAirportName() + " airport.");
+        //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " heading to " + this.getAirportName() + " airport.");
 
         // The bus takes 5-10 seconds to get to the airport.
         try {
@@ -81,9 +81,9 @@ public class Bus implements Runnable {
     // The bus arrives at the airport.
     private void arriveAirport() {
         // Print in console.
-        System.out.println(this.getID() + " arrived to " + this.getAirportName() + " airport.");
+        System.out.println("Bus " + this.getID() + " arrived to " + this.getAirportName() + " airport.");
         // Log event.
-        log.logEvent(this.getAirportName(), this.getID() + " arrived to " + this.getAirportName() + " airport.");
+        //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " arrived to " + this.getAirportName() + " airport.");
 
         // Passengers transfer to the airport.
         this.airport.addPassengers(numPassengers);
@@ -99,22 +99,22 @@ public class Bus implements Runnable {
     // A random number of passengers between 0 and 50 get in the bus from the airport.
     private void boardPassengersAirport() {
         // Randomly choose 0-50 passengers to board.
-        int passengersToBoard = ThreadLocalRandom.current().nextInt(0, 51);
+        int passengersToBoard = ThreadLocalRandom.current().nextInt(0, 1);
         // Board the maximum number of passengers possible (airport might have fewer than the randomly chosen value).
         this.setNumPassengers(this.airport.offloadPassengers(passengersToBoard));
 
         // Print in console.
-        System.out.println(this.getID() + " picked up [" + this.getNumPassengers() + "] passengers at " + this.getAirportName() + " airport.");
+        System.out.println("Bus " + this.getID() + " picked up [" + this.getNumPassengers() + "] passengers at " + this.getAirportName() + " airport.");
         // Log event.
-        log.logEvent(this.getAirportName(), this.getID() + " picked up [" + this.getNumPassengers() + "] passengers at " + this.getAirportName() + " airport.");
+        //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " picked up [" + this.getNumPassengers() + "] passengers at " + this.getAirportName() + " airport.");
     }
 
     // The bus heads downtown from the airport.
     private void goToDowntown() {
         // Print in console.
-        System.out.println(this.getID() + " heading downtown.");
+        System.out.println("Bus " + this.getID() + " heading downtown.");
         // Log event.
-        log.logEvent(this.getAirportName(), this.getID() + " heading downtown.");
+        //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " heading downtown.");
 
         // The bus takes 5-10 seconds to get downtown.
         try {

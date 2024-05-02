@@ -6,15 +6,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Airport {
 
-    private final BoardingGate[] boardingGates = new BoardingGate[6];
-    private final Thread[] boardingGateThreads = new Thread[6];
+    private BoardingGate[] boardingGates = new BoardingGate[6];
+    private Thread[] boardingGateThreads = new Thread[6];
 
-    private final Hangar hangar = new Hangar();
-    private final MaintenanceHall maintenanceHall = new MaintenanceHall(20);
-    private final ParkingArea parkingArea = new ParkingArea();
-    private final TaxiArea taxiArea = new TaxiArea();
+    private Hangar hangar = new Hangar();
+    private MaintenanceHall maintenanceHall = new MaintenanceHall(20);
+    private ParkingArea parkingArea = new ParkingArea();
+    private TaxiArea taxiArea = new TaxiArea();
 
-    private final String airportName;
+    private String airportName;
 
     // TODO: Change variable from AtomicInteger to int (using locks) later on if necessary.
     private AtomicInteger currentPassengers = new AtomicInteger(0);
@@ -23,12 +23,10 @@ public class Airport {
     public Airport(String airportName) {
         // Initialize each Boarding Gate in the boardingGates array and start each thread.
         for (int i = 0; i < 6; i++) {
-            this.boardingGates[i] = new BoardingGate(this.getParkingArea());
+            this.boardingGates[i] = new BoardingGate(this.getParkingArea(), i);
             this.boardingGateThreads[i] = new Thread(boardingGates[i]);
             this.boardingGateThreads[i].start();
-
         }
-
         this.airportName = airportName;
     }
 
@@ -46,8 +44,13 @@ public class Airport {
             int newPassengers = Math.max(0, nowPassengers - passengers);
             if (this.currentPassengers.compareAndSet(nowPassengers, newPassengers)) {
                 return passengersToOffload;
+                
             }
         }
+    }
+
+    public String getAirportName() {
+        return airportName;
     }
 
     // Method to get total  passengers.
@@ -62,5 +65,9 @@ public class Airport {
 
     public ParkingArea getParkingArea() {
         return parkingArea;
+    }
+
+    public Hangar getHangar() {
+        return hangar;
     }
 }

@@ -33,4 +33,8 @@ public class Hangar {
     public int getMaxSize() {
         return maxSize.get();
     }
+
+    public boolean isAtHead(Airplane airplane) {
+        return airplaneQueue.peek().equals(airplane);
+    }
 }
