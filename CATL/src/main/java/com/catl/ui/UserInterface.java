@@ -475,10 +475,7 @@ public class UserInterface extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    public void startInterface() {
         /* Set the FlatLaf dark look and feel */
         try {
             // Set FlatLaf Cupertino Dark theme
@@ -486,7 +483,6 @@ public class UserInterface extends javax.swing.JFrame {
 
             // If you want to set the theme globally for all components, you can use:
             // FlatDarkLaf.setup();
-
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(UserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
