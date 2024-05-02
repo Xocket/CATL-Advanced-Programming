@@ -1,10 +1,10 @@
 package com.catl.ui;
 
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+
 public class UserInterface extends javax.swing.JFrame {
 
-    /**
-     * Creates new form UserInterface
-     */
     public UserInterface() {
         initComponents();
     }
@@ -80,10 +80,9 @@ public class UserInterface extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1600, 1000));
-        setPreferredSize(new java.awt.Dimension(1600, 1000));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(60, 63, 65));
+        jPanel1.setBackground(new java.awt.Color(246, 246, 246));
         jPanel1.setName("Airport Simulator"); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(1600, 1000));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -275,7 +274,7 @@ public class UserInterface extends javax.swing.JFrame {
         labelTaxiAreaBarcelona.setFocusable(false);
         jPanel1.add(labelTaxiAreaBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 550, 130, 30));
 
-        jPanel2.setBackground(new java.awt.Color(60, 63, 65));
+        jPanel2.setBackground(new java.awt.Color(30, 30, 30));
         jPanel2.setName("Airport Simulator"); // NOI18N
         jPanel2.setPreferredSize(new java.awt.Dimension(1600, 1000));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -476,15 +475,11 @@ public class UserInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void startInterface() {
-        /* Set the FlatLaf dark look and feel */
+        // Set the FlatLaf dark look and feel.
         try {
-            // Set FlatLaf Cupertino Dark theme
-            javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatDarkLaf());
-
-            // If you want to set the theme globally for all components, you can use:
-            // FlatDarkLaf.setup();
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            FlatMacDarkLaf.setup();
+        } catch (Exception e) {
+            System.out.println("ERROR - Setting up FlatLaf look and feel.");
         }
 
         /* Create and display the form */
