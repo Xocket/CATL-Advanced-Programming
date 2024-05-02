@@ -6,11 +6,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Airport {
 
-    private BoardingGate[] boardingGates = new BoardingGate[6];
-    private Hangar hangar = new Hangar();
-    private MaintenanceHall maintenanceHall = new MaintenanceHall(20);
-    private ParkingArea parkingArea = new ParkingArea();
-    private TaxiArea taxiArea = new TaxiArea();
+    private final BoardingGate[] boardingGates = new BoardingGate[6];
+    private final Thread[] boardingGateThreads = new Thread[6];
+
+    private final Hangar hangar = new Hangar();
+    private final MaintenanceHall maintenanceHall = new MaintenanceHall(20);
+    private final ParkingArea parkingArea = new ParkingArea();
+    private final TaxiArea taxiArea = new TaxiArea();
 
     private final String airportName;
 
@@ -19,10 +21,14 @@ public class Airport {
     private AtomicInteger totalPassengers = new AtomicInteger(0);
 
     public Airport(String airportName) {
-        // Initialize each Boarding Gate in the boardingGates array.
+        // Initialize each Boarding Gate in the boardingGates array and start each thread.
         for (int i = 0; i < 6; i++) {
-            this.boardingGates[i] = new BoardingGate();
+            this.boardingGates[i] = new BoardingGate(this.getParkingArea());
+            this.boardingGateThreads[i] = new Thread(boardingGates[i]);
+            this.boardingGateThreads[i].start();
+
         }
+
         this.airportName = airportName;
     }
 
@@ -52,5 +58,9 @@ public class Airport {
     // Method to get the historic total number of passengers.
     public int getTotalPassengers() {
         return totalPassengers.get();
+    }
+
+    public ParkingArea getParkingArea() {
+        return parkingArea;
     }
 }

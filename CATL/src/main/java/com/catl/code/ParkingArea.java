@@ -2,26 +2,27 @@
 package com.catl.code;
 
 // Importing classes.
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ParkingArea {
 
-    private ConcurrentLinkedQueue<Airplane> airplaneQueue = new ConcurrentLinkedQueue<>();
+    private BlockingQueue<Airplane> airplaneQueue = new LinkedBlockingQueue<>();
 
     private AtomicInteger accumulativeNumberAirplanes = new AtomicInteger(0);
     private AtomicInteger maxSize = new AtomicInteger(0);
 
     // Add an airplane to the Parking Area.
-    public void addAirplane(Airplane airplane) {
-        airplaneQueue.add(airplane);
+    public void addAirplane(Airplane airplane) throws InterruptedException {
+        airplaneQueue.put(airplane);
         accumulativeNumberAirplanes.incrementAndGet();
         maxSize.set(Math.max(maxSize.get(), airplaneQueue.size()));
     }
 
     // Remove and returns an airplane from the head of the queue.
-    public Airplane removeAirplane() {
-        return airplaneQueue.poll();
+    public Airplane removeAirplane() throws InterruptedException {
+        return airplaneQueue.take();
     }
 
     // Get the number of Airplanes  added in total.

@@ -44,4 +44,23 @@ public class Airplane implements Runnable {
         return letter1 + "" + letter2;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getAirportName() {
+        return airportName;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public Airport getMadridAirport() {
+        return madridAirport;
+    }
+
+    public Airport getBarcelonaAirport() {
+        return barcelonaAirport;
+    }
 }

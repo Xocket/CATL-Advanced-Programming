@@ -22,8 +22,6 @@ public class UserInterface extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        pauseButton = new javax.swing.JButton();
-        resumeButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         labelMadridAirport = new javax.swing.JLabel();
         labelBarcelonaAirport = new javax.swing.JLabel();
@@ -51,8 +49,8 @@ public class UserInterface extends javax.swing.JFrame {
         labelTaxiAreaMadrid = new javax.swing.JLabel();
         labelTaxiAreaBarcelona = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        pauseButton1 = new javax.swing.JButton();
-        resumeButton1 = new javax.swing.JButton();
+        pauseButton = new javax.swing.JButton();
+        resumeButton = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         labelMadridAirport1 = new javax.swing.JLabel();
         labelBarcelonaAirport1 = new javax.swing.JLabel();
@@ -89,19 +87,6 @@ public class UserInterface extends javax.swing.JFrame {
         jPanel1.setName("Airport Simulator"); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(1600, 1000));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        pauseButton.setBackground(new java.awt.Color(85, 88, 90));
-        pauseButton.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        pauseButton.setForeground(new java.awt.Color(187, 187, 187));
-        pauseButton.setText("PAUSE");
-        pauseButton.setName(""); // NOI18N
-        jPanel1.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 20, 110, 40));
-
-        resumeButton.setBackground(new java.awt.Color(85, 88, 90));
-        resumeButton.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        resumeButton.setForeground(new java.awt.Color(187, 187, 187));
-        resumeButton.setText("RESUME");
-        jPanel1.add(resumeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 20, 110, 40));
         jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 1580, 10));
 
         labelMadridAirport.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
@@ -282,18 +267,18 @@ public class UserInterface extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(1600, 1000));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pauseButton1.setBackground(new java.awt.Color(85, 88, 90));
-        pauseButton1.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        pauseButton1.setForeground(new java.awt.Color(187, 187, 187));
-        pauseButton1.setText("PAUSE");
-        pauseButton1.setName(""); // NOI18N
-        jPanel2.add(pauseButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 20, 110, 40));
+        pauseButton.setBackground(new java.awt.Color(85, 88, 90));
+        pauseButton.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        pauseButton.setForeground(new java.awt.Color(187, 187, 187));
+        pauseButton.setText("PAUSE");
+        pauseButton.setName(""); // NOI18N
+        jPanel2.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 20, 110, 40));
 
-        resumeButton1.setBackground(new java.awt.Color(85, 88, 90));
-        resumeButton1.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        resumeButton1.setForeground(new java.awt.Color(187, 187, 187));
-        resumeButton1.setText("RESUME");
-        jPanel2.add(resumeButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 20, 110, 40));
+        resumeButton.setBackground(new java.awt.Color(85, 88, 90));
+        resumeButton.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        resumeButton.setForeground(new java.awt.Color(187, 187, 187));
+        resumeButton.setText("RESUME");
+        jPanel2.add(resumeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 20, 110, 40));
         jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 1580, 10));
 
         labelMadridAirport1.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
@@ -552,8 +537,6 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel labelTaxiAreaMadrid;
     private javax.swing.JLabel labelTaxiAreaMadrid1;
     private javax.swing.JButton pauseButton;
-    private javax.swing.JButton pauseButton1;
     private javax.swing.JButton resumeButton;
-    private javax.swing.JButton resumeButton1;
     // End of variables declaration//GEN-END:variables
 }

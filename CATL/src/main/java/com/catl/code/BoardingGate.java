@@ -1,34 +1,26 @@
+// Package declaration.
 package com.catl.code;
 
-import java.util.concurrent.locks.*;
+class BoardingGate implements Runnable {
 
-class BoardingGate {
-
+    private final ParkingArea parkingArea;
     private Airplane airplane;
-    private final Lock lock = new ReentrantLock();
-    private final Condition gateAvailable = lock.newCondition();
 
-    public void occupy(Airplane airplane) {
-        lock.lock();
+    public BoardingGate(ParkingArea parkingArea) {
+        this.parkingArea = parkingArea;
+    }
+
+    @Override
+    public void run() {
         try {
-            while (this.airplane != null) {
-                gateAvailable.await();
+            while (true) {
+                airplane = parkingArea.removeAirplane();
+                // TODO: Process the airplane.
+                airplane = null;
             }
-            this.airplane = airplane;
         } catch (InterruptedException e) {
-            // Do nothing.
-        } finally {
-            lock.unlock();
+            System.out.println("ERROR - Boarding Gate");
         }
     }
 
-    public void leave() {
-        lock.lock();
-        try {
-            this.airplane = null;
-            gateAvailable.signalAll();
-        } finally {
-            lock.unlock();
-        }
-    }
 }
