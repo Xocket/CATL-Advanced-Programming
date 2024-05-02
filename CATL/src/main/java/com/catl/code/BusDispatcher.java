@@ -1,5 +1,7 @@
+// Package declaration.
 package com.catl.code;
 
+// Importing classes.
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BusDispatcher implements Runnable {

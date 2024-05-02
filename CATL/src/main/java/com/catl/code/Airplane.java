@@ -28,6 +28,12 @@ public class Airplane implements Runnable {
     @Override
     public void run() {
         while (true) {
+            try {
+                Thread.sleep(100000);
+            } catch (InterruptedException e) {
+                System.out.println("ERROR - Airplane sleeping.");
+            }
+
         }
     }
 
