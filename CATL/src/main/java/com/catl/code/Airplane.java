@@ -1,20 +1,22 @@
+// Package declaration.
 package com.catl.code;
 
+// Importing classes.
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Airplane implements Runnable {
 
     private final String id;
-    private final String airport;
+    private final String airportName;
     private final Log log;
     private final int capacity;
 
     private final Airport madridAirport;
     private final Airport barcelonaAirport;
 
-    public Airplane(String id, String airport, Airport madridAirport, Airport barcelonaAirport, Log log) {
+    public Airplane(String id, String airportName, Airport madridAirport, Airport barcelonaAirport, Log log) {
         this.id = this.getRandomLetters() + "-" + id;
-        this.airport = airport;
+        this.airportName = airportName;
 
         this.madridAirport = madridAirport;
         this.barcelonaAirport = barcelonaAirport;

@@ -1,28 +1,38 @@
+// Package declaration.
 package com.catl.code;
 
+// Importing classes.
 import java.util.concurrent.ThreadLocalRandom;
 
+// Bus class modeled as a thread.
 public class Bus implements Runnable {
 
-    private final String id;
-    private final String airport;
-    private int numPassengers;
-    private final Log log;
+    // Variable definition.
+    private final String id;            // Bus ID with format "B-XXXX".
+    private final String airportName;   // Name of the airport it belongs to.
+    private final Airport airport;      // Airport it belongs to.
+    private int numPassengers;          // Number of passengers it's carrying.
+    private final Log log;              // Log object to log events.
 
-    public Bus(String id, String airport, Log log) {
+    // Bus class constructor.
+    public Bus(String id, String airportName, Airport airport, Log log) {
         this.id = "B-" + id;
+        this.airportName = airportName;
         this.airport = airport;
+        this.numPassengers = 0;
         this.log = log;
     }
 
+    // Run method of the Bus class.
     @Override
     public void run() {
+        // Continuous lifetime cycle of every bus.
         while (true) {
             arriveDowntown();
-            boardPassengers();
+            boardPassengersDowntown();
             goToAirport();
             arriveAirport();
-            boardPassengers();
+            boardPassengersAirport();
             goToDowntown();
         }
     }
@@ -32,7 +42,7 @@ public class Bus implements Runnable {
         // Print in console.
         System.out.println(this.getID() + " arrived downtown.");
         // Log event.
-        log.logEvent(this.getAirport(), this.getID() + " arrived downtown.");
+        log.logEvent(this.getAirportName(), this.getID() + " arrived downtown.");
 
         // The bus waits at the stop 2-5 seconds.
         try {
@@ -42,20 +52,23 @@ public class Bus implements Runnable {
         }
     }
 
-    // A random number of passengers between 0 and 50 get in the bus.
-    private void boardPassengers() {
-        // Using ThreadLocalRandom for optimization.
-        this.numPassengers = ThreadLocalRandom.current().nextInt(0, 51);
+    // // Passengers board the bus in downtown.
+    private void boardPassengersDowntown() {
+        // A random number of 0-50 passengers board the bus.
+        this.setNumPassengers(ThreadLocalRandom.current().nextInt(0, 51));
+
+        // Print in console.
         System.out.println(this.getID() + " picked up [" + this.getNumPassengers() + "] passengers.");
-        log.logEvent(this.getAirport(), this.getID() + " picked up [" + this.getNumPassengers() + "] passengers.");
+        // Log event.
+        log.logEvent(this.getAirportName(), this.getID() + " picked up [" + this.getNumPassengers() + "] passengers.");
     }
 
     // The bus heads to the airport.
     private void goToAirport() {
         // Print in console.
-        System.out.println(this.getID() + " heading to " + this.getAirport() + " airport.");
+        System.out.println(this.getID() + " heading to " + this.getAirportName() + " airport.");
         // Log event.
-        log.logEvent(this.getAirport(), this.getID() + " heading to " + this.getAirport() + " airport.");
+        log.logEvent(this.getAirportName(), this.getID() + " heading to " + this.getAirportName() + " airport.");
 
         // The bus takes 5-10 seconds to get to the airport.
         try {
@@ -68,28 +81,40 @@ public class Bus implements Runnable {
     // The bus arrives at the airport.
     private void arriveAirport() {
         // Print in console.
-        System.out.println(this.getID() + " arrived to " + this.getAirport() + " airport.");
+        System.out.println(this.getID() + " arrived to " + this.getAirportName() + " airport.");
         // Log event.
-        log.logEvent(this.getAirport(), this.getID() + " arrived to " + this.getAirport() + " airport.");
+        log.logEvent(this.getAirportName(), this.getID() + " arrived to " + this.getAirportName() + " airport.");
 
-        // TODO: add passengers to the airport system.
+        // Passengers transfer to the airport.
+        this.airport.addPassengers(numPassengers);
+
         // The bus waits at the airport for passengers for 2-5 seconds.
         try {
             Thread.sleep(ThreadLocalRandom.current().nextInt(2000, 5001));
         } catch (InterruptedException e) {
             System.out.println("ERROR - " + this.getID() + " arriveAirport()");
         }
-
-        // TODO: substract passangers from the airport system. Probably use a lock or
-        // some other kind of synchronization mechanism since the airport might have
-        // fewer passangers than the ones randomly generated for the bus to take.
     }
 
+    // A random number of passengers between 0 and 50 get in the bus from the airport.
+    private void boardPassengersAirport() {
+        // Randomly choose 0-50 passengers to board.
+        int passengersToBoard = ThreadLocalRandom.current().nextInt(0, 51);
+        // Board the maximum number of passengers possible (airport might have fewer than the randomly chosen value).
+        this.setNumPassengers(this.airport.offloadPassengers(passengersToBoard));
+
+        // Print in console.
+        System.out.println(this.getID() + " picked up [" + this.getNumPassengers() + "] passengers at " + this.getAirportName() + " airport.");
+        // Log event.
+        log.logEvent(this.getAirportName(), this.getID() + " picked up [" + this.getNumPassengers() + "] passengers at " + this.getAirportName() + " airport.");
+    }
+
+    // The bus heads downtown from the airport.
     private void goToDowntown() {
         // Print in console.
         System.out.println(this.getID() + " heading downtown.");
         // Log event.
-        log.logEvent(this.getAirport(), this.getID() + " heading downtown.");
+        log.logEvent(this.getAirportName(), this.getID() + " heading downtown.");
 
         // The bus takes 5-10 seconds to get downtown.
         try {
@@ -99,18 +124,22 @@ public class Bus implements Runnable {
         }
     }
 
+    // Returns the bus ID.
     public String getID() {
         return id;
     }
 
-    public String getAirport() {
-        return airport;
+    // Returns the airport's name the bus belongs to.
+    public String getAirportName() {
+        return airportName;
     }
 
+    // Returns the number of passengers the bus is carrying.
     public int getNumPassengers() {
         return numPassengers;
     }
 
+    // Sets the number of passengers the bus is carrying.
     public void setNumPassengers(int numPassengers) {
         this.numPassengers = numPassengers;
     }
