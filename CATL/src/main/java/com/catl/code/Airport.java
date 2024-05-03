@@ -44,7 +44,7 @@ public class Airport {
             int newPassengers = Math.max(0, nowPassengers - passengers);
             if (this.currentPassengers.compareAndSet(nowPassengers, newPassengers)) {
                 return passengersToOffload;
-                
+
             }
         }
     }

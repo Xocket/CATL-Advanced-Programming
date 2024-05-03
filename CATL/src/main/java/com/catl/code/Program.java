@@ -3,6 +3,7 @@ package com.catl.code;
 
 // Importing classes.
 import com.catl.ui.UserInterface;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 // The Program class contains the execution code for the program.
 public class Program {
@@ -16,8 +17,14 @@ public class Program {
         Airport madridAirport = new Airport("Madrid");
         Airport barcelonaAirport = new Airport("Barcelona");
 
-        // Create a UserInterface object and start the interface.
-        UserInterface ui = new UserInterface();
+        // Set UI theme.
+        try {
+            FlatMacDarkLaf.setup();
+        } catch (Exception e) {
+            System.err.println("Failed to initialize LaF.");
+        }
+        // Initialize a UserInterface object and start the UI.
+        UserInterface ui = new UserInterface(madridAirport, barcelonaAirport);
         ui.startInterface();
 
         // Create an instance of BusDispatcher.

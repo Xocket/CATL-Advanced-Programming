@@ -55,10 +55,11 @@ public class Bus implements Runnable {
     // // Passengers board the bus in downtown.
     private void boardPassengersDowntown() {
         // A random number of 0-50 passengers board the bus.
-        this.setNumPassengers(ThreadLocalRandom.current().nextInt(0, 51));
+        int passengersToBoard = ThreadLocalRandom.current().nextInt(0, 51);
+        this.setNumPassengers(passengersToBoard);
 
         // Print in console.
-        //BRUH System.out.println("Bus " + this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
+        // System.out.println("Bus " + this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
         // Log event.
         //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " picked up [" + this.getNumPassengers() + "] passengers downtown.");
     }
@@ -99,7 +100,7 @@ public class Bus implements Runnable {
     // A random number of passengers between 0 and 50 get in the bus from the airport.
     private void boardPassengersAirport() {
         // Randomly choose 0-50 passengers to board.
-        int passengersToBoard = ThreadLocalRandom.current().nextInt(0, 1);
+        int passengersToBoard = ThreadLocalRandom.current().nextInt(0, 11);
         // Board the maximum number of passengers possible (airport might have fewer than the randomly chosen value).
         this.setNumPassengers(this.airport.offloadPassengers(passengersToBoard));
 
