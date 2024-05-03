@@ -3,6 +3,9 @@ package com.catl.ui;
 
 // Importing classes.
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 // User Interface class.
 public class UserInterface extends javax.swing.JFrame {
@@ -77,6 +80,7 @@ public class UserInterface extends javax.swing.JFrame {
         labelGate5Barcelona1 = new javax.swing.JLabel();
         labelGate6Barcelona1 = new javax.swing.JLabel();
         labelTaxiAreaBarcelona1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -454,6 +458,11 @@ public class UserInterface extends javax.swing.JFrame {
         labelTaxiAreaBarcelona1.setFocusable(false);
         jPanel2.add(labelTaxiAreaBarcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 550, 130, 30));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("jLabel1");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 210, 200, 50));
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 1000));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 1000));
@@ -463,25 +472,42 @@ public class UserInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Method to start the User Interface.
+    // Method to start the User Interface.
+    // Method to start the User Interface.
     public void startInterface() {
         try {
             // Set the FlatLaf dark look and feel.
             FlatMacDarkLaf.setup();
 
-            // Closes the program gracefully.
-            this.setDefaultCloseOperation(UserInterface.EXIT_ON_CLOSE);
-
         } catch (Exception e) {
             System.out.println("ERROR - Setting up FlatLaf look and feel.");
         }
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new UserInterface().setVisible(true);
+        // Create the UserInterface instance
+        UserInterface ui = new UserInterface();
+
+        // Display the form
+        ui.setVisible(true);
+
+        // Perform periodic updates on the JLabel using SwingUtilities.invokeLater()
+        Timer timer = new Timer(1000, e -> {
+            SwingUtilities.invokeLater(() -> {
+                updateInterface(ui);
+            });
         });
+        timer.start();
+
+        // Closes the program gracefully.
+        ui.setDefaultCloseOperation(UserInterface.EXIT_ON_CLOSE);
+    }
+
+    // Method to update the User Interface.
+    public void updateInterface(UserInterface ui) {
+        ui.jLabel1.setText("damn");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;

@@ -1,6 +1,7 @@
 // Package declaration.
 package com.catl.code;
 
+// Importing classes.
 import com.catl.ui.UserInterface;
 
 // The Program class contains the execution code for the program.
