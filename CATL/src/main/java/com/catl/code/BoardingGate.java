@@ -1,11 +1,12 @@
 // Package declaration.
 package com.catl.code;
 
-class BoardingGate implements Runnable {
+public class BoardingGate implements Runnable {
 
     private ParkingArea parkingArea;
     private Airplane airplane;
     private final int gateNumber;
+    private String airplaneStatus;
 
     public BoardingGate(ParkingArea parkingArea, int gateNumber) {
         this.parkingArea = parkingArea;
@@ -22,9 +23,13 @@ class BoardingGate implements Runnable {
             }
 
             // Process boarding.
-            airplane.getLog().logEvent(airplane.getCurrentAirport().getAirportName(), airplane.getID() + " ATTEMPTING TO BOARD AT " + getGateNumber());
+            airplane.setBg(this);
+            //setAirplaneStatus(airplane);
+
             this.boardPassengers(airplane);
+
             airplane = null;
+            setAirplaneStatus(airplane);
         }
     }
 
@@ -36,7 +41,6 @@ class BoardingGate implements Runnable {
             airplane.notify();
             try {
                 // Wait until the airplane finishes boarding passengers.
-                airplane.getLog().logEvent(airplane.getCurrentAirport().getAirportName(), airplane.getID() + " BOARDING!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 airplane.wait();
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Boarding Gate waiting for airplane to finish boarding passengers.");
@@ -52,4 +56,27 @@ class BoardingGate implements Runnable {
     public int getGateNumber() {
         return gateNumber;
     }
+
+    public void setAirplaneStatus(Airplane airplane) {
+        // Check if airplane is null.
+        if (airplane == null) {
+            airplaneStatus = "";
+            return;
+        }
+
+        int embarkDisembark = airplane.getEmbarkDisembark();
+        String airplaneID = airplane.getOccupancyID();
+
+        // Check if embarkDisembark is odd or even.
+        if (embarkDisembark % 2 == 0) {
+            airplaneStatus = "Disembark " + airplaneID;
+        } else {
+            airplaneStatus = "Boarding " + airplaneID;
+        }
+    }
+
+    public String getAirplaneStatus() {
+        return airplaneStatus;
+    }
+
 }

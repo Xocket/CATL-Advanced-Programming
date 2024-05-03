@@ -71,6 +71,9 @@ public class Bus implements Runnable {
         // Log event.
         //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " heading to " + this.getAirportName() + " airport.");
 
+        // Update status.
+        updateStatusBusToAirport();
+
         // The bus takes 5-10 seconds to get to the airport.
         try {
             Thread.sleep(ThreadLocalRandom.current().nextInt(5000, 10001));
@@ -117,6 +120,8 @@ public class Bus implements Runnable {
         // Log event.
         //BRUH log.logEvent(this.getAirportName(), "Bus " + this.getID() + " heading downtown.");
 
+        // Update status.
+        updateStatusBusToDowntown();
         // The bus takes 5-10 seconds to get downtown.
         try {
             Thread.sleep(ThreadLocalRandom.current().nextInt(5000, 10001));
@@ -143,5 +148,13 @@ public class Bus implements Runnable {
     // Sets the number of passengers the bus is carrying.
     public void setNumPassengers(int numPassengers) {
         this.numPassengers = numPassengers;
+    }
+
+    private void updateStatusBusToAirport() {
+        airport.setStatusBusToAirport(this.getID() + " (" + this.numPassengers + ")");
+    }
+
+    private void updateStatusBusToDowntown() {
+        airport.setStatusBusToDowntown(this.getID() + " (" + this.numPassengers + ")");
     }
 }

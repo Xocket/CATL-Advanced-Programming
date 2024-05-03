@@ -23,6 +23,7 @@ public class Program {
         } catch (Exception e) {
             System.err.println("Failed to initialize LaF.");
         }
+
         // Initialize a UserInterface object and start the UI.
         UserInterface ui = new UserInterface(madridAirport, barcelonaAirport);
         ui.startInterface();

@@ -15,6 +15,9 @@ public class Airport {
     private TaxiArea taxiArea = new TaxiArea();
 
     private String airportName;
+    
+    private String statusBusToDowntown;
+    private String statusBusToAirport;
 
     // TODO: Change variable from AtomicInteger to int (using locks) later on if necessary.
     private AtomicInteger currentPassengers = new AtomicInteger(0);
@@ -70,4 +73,26 @@ public class Airport {
     public Hangar getHangar() {
         return hangar;
     }
+
+    public BoardingGate getBoardingGates(int i) {
+        return boardingGates[i];
+    }
+
+    public String getStatusBusToDowntown() {
+        return statusBusToDowntown;
+    }
+
+    public void setStatusBusToDowntown(String statusBusToDowntown) {
+        this.statusBusToDowntown = statusBusToDowntown;
+    }
+
+    public String getStatusBusToAirport() {
+        return statusBusToAirport;
+    }
+
+    public void setStatusBusToAirport(String statusBusToAirport) {
+        this.statusBusToAirport = statusBusToAirport;
+    }
+    
+    
 }

@@ -15,6 +15,8 @@ public class Airplane implements Runnable {
     private Airport currentAirport;
     private Airport destinationAirport;
 
+    private int embarkDisembark;
+
     public boolean isNotified() {
         return isNotified;
     }
@@ -25,6 +27,12 @@ public class Airplane implements Runnable {
 
     private volatile boolean isNotified = false;
 
+    private BoardingGate bg;
+
+    public void setBg(BoardingGate bg) {
+        this.bg = bg;
+    }
+
     public Airplane(String id, Airport currentAirport, Airport destinationAirport, Log log) {
         this.id = this.getRandomLetters() + "-" + id;
 
@@ -33,6 +41,8 @@ public class Airplane implements Runnable {
 
         this.log = log;
         this.capacity = ThreadLocalRandom.current().nextInt(100, 301);
+        this.bg = null;
+        this.numPassengers = 0;
     }
 
     @Override
@@ -107,12 +117,16 @@ public class Airplane implements Runnable {
             }
             isNotified = false;
         }
-        log.logEvent(this.currentAirport.getAirportName(), getID() + " CHECK BEFORE LOOPS!!!!!!!!!!!");
+
+        bg.setAirplaneStatus(this);
+
+        System.out.println(embarkDisembark++);
 
         for (int i = 0; i < 3; i++) {
-            this.setNumPassengers(this.getCurrentAirport().offloadPassengers(this.getCapacity()));
+            this.addPassengers(this.getCurrentAirport().offloadPassengers(this.getCapacity() - this.getNumPassengers()));
+            bg.setAirplaneStatus(this);
             try {
-                Thread.sleep(ThreadLocalRandom.current().nextInt(10, 31));
+                Thread.sleep(ThreadLocalRandom.current().nextInt(10, 3001));
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Boarding passengers attempts boardPassengers()");
             }
@@ -120,18 +134,16 @@ public class Airplane implements Runnable {
                 break;
             } else {
                 try {
-                    Thread.sleep(ThreadLocalRandom.current().nextInt(10, 51));
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(10, 5001));
                 } catch (InterruptedException e) {
                     System.out.println("ERROR - Waiting for passengers boardPassengers()");
                 }
             }
+            System.out.println("THIS NUMBER OF PASSENGERS OF FLIGHT " + getID() + " " + this.numPassengers);
         }
-
-        log.logEvent(this.currentAirport.getAirportName(), getID() + " xddddddddddddddddddddddddd FINISHED BOARDING!!!!!!!!!!!");
 
         // Notify the boarding gate that it has finished boarding passengers.
         synchronized (this) {
-            log.logEvent(this.currentAirport.getAirportName(), getID() + " FINISHED BOARDING!!!!!!!!!!!");
             notify();
         }
     }
@@ -167,12 +179,28 @@ public class Airplane implements Runnable {
         this.numPassengers = numPassengers;
     }
 
+    public void addPassengers(int newPassengers) {
+        this.numPassengers += newPassengers;
+    }
+
     public String getOccupancy() {
         return "[" + this.getNumPassengers() + "/" + this.getCapacity() + "]";
     }
 
+    public String getOccupancyID() {
+        return this.getID() + " [" + this.getNumPassengers() + "/" + this.getCapacity() + "]";
+    }
+
     public Log getLog() {
         return log;
+    }
+
+    public int getEmbarkDisembark() {
+        return embarkDisembark;
+    }
+
+    public void setEmbarkDisembark(int embarkDisembark) {
+        this.embarkDisembark = embarkDisembark;
     }
 
     @Override

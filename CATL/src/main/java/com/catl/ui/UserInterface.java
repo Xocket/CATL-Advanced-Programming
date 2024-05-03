@@ -4,6 +4,8 @@ package com.catl.ui;
 // Importing classes.
 import javax.swing.*;
 import com.catl.code.Airport;
+import java.text.NumberFormat;
+import com.catl.code.BoardingGate;
 
 // User Interface class.
 public class UserInterface extends javax.swing.JFrame {
@@ -27,8 +29,15 @@ public class UserInterface extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        Panel = new javax.swing.JPanel();
+        resumeButton = new javax.swing.JButton();
+        pauseButton = new javax.swing.JButton();
+        labelMadridAirport = new javax.swing.JLabel();
+        labelBarcelonaAirport = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
+        labelBusTransfersAirportBarcelona = new javax.swing.JLabel();
         labelParkingAreaMadrid = new javax.swing.JLabel();
         labelParkingAreaBarcelona = new javax.swing.JLabel();
         labelMaintenanceBarcelona = new javax.swing.JLabel();
@@ -49,37 +58,29 @@ public class UserInterface extends javax.swing.JFrame {
         labelGate6Barcelona = new javax.swing.JLabel();
         labelTaxiAreaMadrid = new javax.swing.JLabel();
         labelTaxiAreaBarcelona = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        pauseButton = new javax.swing.JButton();
-        resumeButton = new javax.swing.JButton();
-        jSeparator3 = new javax.swing.JSeparator();
-        labelMadridAirport = new javax.swing.JLabel();
-        labelBarcelonaAirport = new javax.swing.JLabel();
-        jSeparator4 = new javax.swing.JSeparator();
-        labelTaxiAreaMadrid1 = new javax.swing.JLabel();
-        labelParkingAreaMadrid1 = new javax.swing.JLabel();
-        labelParkingAreaBarcelona1 = new javax.swing.JLabel();
-        labelMaintenanceBarcelona1 = new javax.swing.JLabel();
-        labelMaintenanceMadrid1 = new javax.swing.JLabel();
-        labelHangarBarcelona1 = new javax.swing.JLabel();
-        labelHangarMadrid1 = new javax.swing.JLabel();
-        labelNumberPassengersBarcelonaAirport = new javax.swing.JLabel();
-        labelGate1Madrid1 = new javax.swing.JLabel();
-        labelGate2Madrid1 = new javax.swing.JLabel();
-        labelGate3Madrid1 = new javax.swing.JLabel();
-        labelGate4Madrid1 = new javax.swing.JLabel();
-        labelGate5Madrid1 = new javax.swing.JLabel();
-        labelGate6Madrid1 = new javax.swing.JLabel();
-        labelGate1Barcelona1 = new javax.swing.JLabel();
-        labelGate2Barcelona1 = new javax.swing.JLabel();
-        labelGate3Barcelona1 = new javax.swing.JLabel();
-        labelGate4Barcelona1 = new javax.swing.JLabel();
-        labelGate5Barcelona1 = new javax.swing.JLabel();
-        labelGate6Barcelona1 = new javax.swing.JLabel();
-        labelTaxiAreaBarcelona1 = new javax.swing.JLabel();
+        updaterBusToDowntownBarcelona = new javax.swing.JTextField();
+        updaterBarcelonaCurrentPassengers = new javax.swing.JFormattedTextField();
+        updaterMadridCurrentPassengers = new javax.swing.JFormattedTextField();
         labelNumberPassengersMadridAirport = new javax.swing.JLabel();
-        updaterMadridCurrentPassengers = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        labelNumberPassengersBarcelonaAirport = new javax.swing.JLabel();
+        updaterGate6Madrid = new javax.swing.JTextField();
+        updaterGate5Madrid = new javax.swing.JTextField();
+        updaterGate4Madrid = new javax.swing.JTextField();
+        updaterGate3Madrid = new javax.swing.JTextField();
+        updaterGate2Madrid = new javax.swing.JTextField();
+        updaterGate1Madrid = new javax.swing.JTextField();
+        updaterGate1Barcelona = new javax.swing.JTextField();
+        updaterGate2Barcelona = new javax.swing.JTextField();
+        updaterGate3Barcelona = new javax.swing.JTextField();
+        updaterGate4Barcelona = new javax.swing.JTextField();
+        updaterGate5Barcelona = new javax.swing.JTextField();
+        updaterGate6Barcelona = new javax.swing.JTextField();
+        labelBusTransfersDowntownBarcelona = new javax.swing.JLabel();
+        updaterBusToAirportBarcelona = new javax.swing.JTextField();
+        labelBusTransfersAirportMadrid = new javax.swing.JLabel();
+        labelBusTransfersDowntownMadrid = new javax.swing.JLabel();
+        updaterBusToAirportMadrid = new javax.swing.JTextField();
+        updaterBusToDowntownMadrid = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -88,171 +89,23 @@ public class UserInterface extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(246, 246, 246));
-        jPanel1.setName("Airport Simulator"); // NOI18N
-        jPanel1.setPreferredSize(new java.awt.Dimension(1600, 1000));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 1580, 10));
+        Panel.setBackground(new java.awt.Color(30, 30, 30));
+        Panel.setName("Airport Simulator"); // NOI18N
+        Panel.setPreferredSize(new java.awt.Dimension(1600, 1000));
+        Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        labelParkingAreaMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelParkingAreaMadrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelParkingAreaMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelParkingAreaMadrid.setText("Parking Area");
-        labelParkingAreaMadrid.setFocusable(false);
-        jPanel1.add(labelParkingAreaMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 380, 130, 30));
-
-        labelParkingAreaBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelParkingAreaBarcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelParkingAreaBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelParkingAreaBarcelona.setText("Parking Area");
-        labelParkingAreaBarcelona.setFocusable(false);
-        jPanel1.add(labelParkingAreaBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, 130, 30));
-
-        labelMaintenanceBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelMaintenanceBarcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelMaintenanceBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelMaintenanceBarcelona.setText("Maintenance");
-        labelMaintenanceBarcelona.setFocusable(false);
-        jPanel1.add(labelMaintenanceBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 330, 130, 30));
-
-        labelMaintenanceMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelMaintenanceMadrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelMaintenanceMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelMaintenanceMadrid.setText("Maintenance");
-        labelMaintenanceMadrid.setFocusable(false);
-        jPanel1.add(labelMaintenanceMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 130, 30));
-
-        labelHangarMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelHangarMadrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelHangarMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelHangarMadrid.setText("Hangar");
-        labelHangarMadrid.setFocusable(false);
-        jPanel1.add(labelHangarMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, 70, 30));
-
-        labelHangarBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelHangarBarcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelHangarBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelHangarBarcelona.setText("Hangar");
-        labelHangarBarcelona.setFocusable(false);
-        jPanel1.add(labelHangarBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 280, 70, 30));
-
-        labelGate1Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate1Madrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate1Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate1Madrid.setText("Gate 1");
-        labelGate1Madrid.setFocusable(false);
-        jPanel1.add(labelGate1Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 130, 30));
-
-        labelGate2Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate2Madrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate2Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate2Madrid.setText("Gate 2");
-        labelGate2Madrid.setFocusable(false);
-        jPanel1.add(labelGate2Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 460, 130, 30));
-
-        labelGate3Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate3Madrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate3Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate3Madrid.setText("Gate 3");
-        labelGate3Madrid.setFocusable(false);
-        jPanel1.add(labelGate3Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 130, 30));
-
-        labelGate4Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate4Madrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate4Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate4Madrid.setText("Gate 4");
-        labelGate4Madrid.setFocusable(false);
-        jPanel1.add(labelGate4Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 430, 130, 30));
-
-        labelGate5Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate5Madrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate5Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate5Madrid.setText("Gate 5");
-        labelGate5Madrid.setFocusable(false);
-        jPanel1.add(labelGate5Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 460, 130, 30));
-
-        labelGate6Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate6Madrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate6Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate6Madrid.setText("Gate 6");
-        labelGate6Madrid.setFocusable(false);
-        jPanel1.add(labelGate6Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 490, 130, 30));
-
-        labelGate1Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate1Barcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate1Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate1Barcelona.setText("Gate 1");
-        labelGate1Barcelona.setFocusable(false);
-        jPanel1.add(labelGate1Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 430, 130, 30));
-
-        labelGate2Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate2Barcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate2Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate2Barcelona.setText("Gate 2");
-        labelGate2Barcelona.setFocusable(false);
-        jPanel1.add(labelGate2Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 460, 130, 30));
-
-        labelGate3Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate3Barcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate3Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate3Barcelona.setText("Gate 3");
-        labelGate3Barcelona.setFocusable(false);
-        jPanel1.add(labelGate3Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 490, 130, 30));
-
-        labelGate4Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate4Barcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate4Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate4Barcelona.setText("Gate 4");
-        labelGate4Barcelona.setFocusable(false);
-        jPanel1.add(labelGate4Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 420, 130, 30));
-
-        labelGate5Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate5Barcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate5Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate5Barcelona.setText("Gate 5");
-        labelGate5Barcelona.setFocusable(false);
-        jPanel1.add(labelGate5Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 450, 130, 30));
-
-        labelGate6Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate6Barcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate6Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate6Barcelona.setText("Gate 6");
-        labelGate6Barcelona.setFocusable(false);
-        jPanel1.add(labelGate6Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 480, 130, 30));
-
-        labelTaxiAreaMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelTaxiAreaMadrid.setForeground(new java.awt.Color(255, 255, 255));
-        labelTaxiAreaMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTaxiAreaMadrid.setText("Taxi Area");
-        labelTaxiAreaMadrid.setFocusable(false);
-        jPanel1.add(labelTaxiAreaMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 130, 30));
-
-        labelTaxiAreaBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelTaxiAreaBarcelona.setForeground(new java.awt.Color(255, 255, 255));
-        labelTaxiAreaBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTaxiAreaBarcelona.setText("Taxi Area");
-        labelTaxiAreaBarcelona.setFocusable(false);
-        jPanel1.add(labelTaxiAreaBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 550, 130, 30));
-
-        jPanel2.setBackground(new java.awt.Color(30, 30, 30));
-        jPanel2.setMinimumSize(new java.awt.Dimension(1600, 800));
-        jPanel2.setName("Airport Simulator"); // NOI18N
-        jPanel2.setPreferredSize(new java.awt.Dimension(1600, 800));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        resumeButton.setBackground(new java.awt.Color(85, 88, 90));
+        resumeButton.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        resumeButton.setForeground(new java.awt.Color(187, 187, 187));
+        resumeButton.setText("RESUME");
+        Panel.add(resumeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 20, 110, 40));
 
         pauseButton.setBackground(new java.awt.Color(85, 88, 90));
         pauseButton.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         pauseButton.setForeground(new java.awt.Color(187, 187, 187));
         pauseButton.setText("PAUSE");
         pauseButton.setName(""); // NOI18N
-        jPanel2.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 20, 110, 40));
-
-        resumeButton.setBackground(new java.awt.Color(85, 88, 90));
-        resumeButton.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        resumeButton.setForeground(new java.awt.Color(187, 187, 187));
-        resumeButton.setText("RESUME");
-        jPanel2.add(resumeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 20, 110, 40));
-        jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 1580, 10));
+        Panel.add(pauseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 20, 110, 40));
 
         labelMadridAirport.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
         labelMadridAirport.setForeground(new java.awt.Color(255, 255, 255));
@@ -260,7 +113,7 @@ public class UserInterface extends javax.swing.JFrame {
         labelMadridAirport.setText("Madrid Airport");
         labelMadridAirport.setFocusable(false);
         labelMadridAirport.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        jPanel2.add(labelMadridAirport, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, 320, 40));
+        Panel.add(labelMadridAirport, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, 320, 40));
 
         labelBarcelonaAirport.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
         labelBarcelonaAirport.setForeground(new java.awt.Color(255, 255, 255));
@@ -268,178 +121,291 @@ public class UserInterface extends javax.swing.JFrame {
         labelBarcelonaAirport.setText("Barcelona Airport");
         labelBarcelonaAirport.setFocusable(false);
         labelBarcelonaAirport.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        jPanel2.add(labelBarcelonaAirport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 100, 320, 40));
+        Panel.add(labelBarcelonaAirport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 100, 320, 40));
+        Panel.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 1580, 10));
+        Panel.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 1580, 10));
 
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator4.setPreferredSize(new java.awt.Dimension(4, 0));
-        jPanel2.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(798, 90, 4, 700));
+        Panel.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(798, 90, 4, 700));
 
-        labelTaxiAreaMadrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelTaxiAreaMadrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelTaxiAreaMadrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTaxiAreaMadrid1.setText("Taxi Area");
-        labelTaxiAreaMadrid1.setFocusable(false);
-        jPanel2.add(labelTaxiAreaMadrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 130, 30));
+        labelBusTransfersAirportBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelBusTransfersAirportBarcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelBusTransfersAirportBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelBusTransfersAirportBarcelona.setText("Transfers Airport");
+        labelBusTransfersAirportBarcelona.setFocusable(false);
+        Panel.add(labelBusTransfersAirportBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 190, 190, 30));
 
-        labelParkingAreaMadrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelParkingAreaMadrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelParkingAreaMadrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelParkingAreaMadrid1.setText("Parking Area");
-        labelParkingAreaMadrid1.setFocusable(false);
-        jPanel2.add(labelParkingAreaMadrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 380, 130, 30));
+        labelParkingAreaMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelParkingAreaMadrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelParkingAreaMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelParkingAreaMadrid.setText("Parking Area");
+        labelParkingAreaMadrid.setFocusable(false);
+        Panel.add(labelParkingAreaMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 370, 130, 30));
 
-        labelParkingAreaBarcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelParkingAreaBarcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelParkingAreaBarcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelParkingAreaBarcelona1.setText("Parking Area");
-        labelParkingAreaBarcelona1.setFocusable(false);
-        jPanel2.add(labelParkingAreaBarcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, 130, 30));
+        labelParkingAreaBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelParkingAreaBarcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelParkingAreaBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelParkingAreaBarcelona.setText("Parking Area");
+        labelParkingAreaBarcelona.setFocusable(false);
+        Panel.add(labelParkingAreaBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 130, 30));
 
-        labelMaintenanceBarcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelMaintenanceBarcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelMaintenanceBarcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelMaintenanceBarcelona1.setText("Maintenance");
-        labelMaintenanceBarcelona1.setFocusable(false);
-        jPanel2.add(labelMaintenanceBarcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 330, 130, 30));
+        labelMaintenanceBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelMaintenanceBarcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelMaintenanceBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelMaintenanceBarcelona.setText("Maintenance");
+        labelMaintenanceBarcelona.setFocusable(false);
+        Panel.add(labelMaintenanceBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 320, 130, 30));
 
-        labelMaintenanceMadrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelMaintenanceMadrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelMaintenanceMadrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelMaintenanceMadrid1.setText("Maintenance");
-        labelMaintenanceMadrid1.setFocusable(false);
-        jPanel2.add(labelMaintenanceMadrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 130, 30));
+        labelMaintenanceMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelMaintenanceMadrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelMaintenanceMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelMaintenanceMadrid.setText("Maintenance");
+        labelMaintenanceMadrid.setFocusable(false);
+        Panel.add(labelMaintenanceMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 130, 30));
 
-        labelHangarBarcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelHangarBarcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelHangarBarcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelHangarBarcelona1.setText("Hangar");
-        labelHangarBarcelona1.setFocusable(false);
-        jPanel2.add(labelHangarBarcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 280, 70, 30));
+        labelHangarMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelHangarMadrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelHangarMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelHangarMadrid.setText("Hangar");
+        labelHangarMadrid.setFocusable(false);
+        Panel.add(labelHangarMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 70, 30));
 
-        labelHangarMadrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelHangarMadrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelHangarMadrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelHangarMadrid1.setText("Hangar");
-        labelHangarMadrid1.setFocusable(false);
-        jPanel2.add(labelHangarMadrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, 70, 30));
+        labelHangarBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelHangarBarcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelHangarBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelHangarBarcelona.setText("Hangar");
+        labelHangarBarcelona.setFocusable(false);
+        Panel.add(labelHangarBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 270, 70, 30));
 
-        labelNumberPassengersBarcelonaAirport.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelNumberPassengersBarcelonaAirport.setForeground(new java.awt.Color(255, 255, 255));
-        labelNumberPassengersBarcelonaAirport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelNumberPassengersBarcelonaAirport.setText("Passengers at the Airport");
-        labelNumberPassengersBarcelonaAirport.setFocusable(false);
-        jPanel2.add(labelNumberPassengersBarcelonaAirport, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 180, 240, 30));
+        labelGate1Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate1Madrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate1Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate1Madrid.setText("Gate 1");
+        labelGate1Madrid.setFocusable(false);
+        Panel.add(labelGate1Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 70, 40));
 
-        labelGate1Madrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate1Madrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate1Madrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate1Madrid1.setText("Gate 1");
-        labelGate1Madrid1.setFocusable(false);
-        jPanel2.add(labelGate1Madrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 130, 30));
+        labelGate2Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate2Madrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate2Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate2Madrid.setText("Gate 2");
+        labelGate2Madrid.setFocusable(false);
+        Panel.add(labelGate2Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 70, 40));
 
-        labelGate2Madrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate2Madrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate2Madrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate2Madrid1.setText("Gate 2");
-        labelGate2Madrid1.setFocusable(false);
-        jPanel2.add(labelGate2Madrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 460, 130, 30));
+        labelGate3Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate3Madrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate3Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate3Madrid.setText("Gate 3");
+        labelGate3Madrid.setFocusable(false);
+        Panel.add(labelGate3Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, 70, 40));
 
-        labelGate3Madrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate3Madrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate3Madrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate3Madrid1.setText("Gate 3");
-        labelGate3Madrid1.setFocusable(false);
-        jPanel2.add(labelGate3Madrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 130, 30));
+        labelGate4Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate4Madrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate4Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate4Madrid.setText("Gate 4");
+        labelGate4Madrid.setFocusable(false);
+        Panel.add(labelGate4Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 420, 70, 40));
 
-        labelGate4Madrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate4Madrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate4Madrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate4Madrid1.setText("Gate 4");
-        labelGate4Madrid1.setFocusable(false);
-        jPanel2.add(labelGate4Madrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 430, 130, 30));
+        labelGate5Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate5Madrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate5Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate5Madrid.setText("Gate 5");
+        labelGate5Madrid.setFocusable(false);
+        Panel.add(labelGate5Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 480, 70, 40));
 
-        labelGate5Madrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate5Madrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate5Madrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate5Madrid1.setText("Gate 5");
-        labelGate5Madrid1.setFocusable(false);
-        jPanel2.add(labelGate5Madrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 460, 130, 30));
+        labelGate6Madrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate6Madrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate6Madrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate6Madrid.setText("Gate 6");
+        labelGate6Madrid.setFocusable(false);
+        Panel.add(labelGate6Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 540, 70, 40));
 
-        labelGate6Madrid1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate6Madrid1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate6Madrid1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate6Madrid1.setText("Gate 6");
-        labelGate6Madrid1.setFocusable(false);
-        jPanel2.add(labelGate6Madrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 490, 130, 30));
+        labelGate1Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate1Barcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate1Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate1Barcelona.setText("Gate 1");
+        labelGate1Barcelona.setFocusable(false);
+        Panel.add(labelGate1Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 420, 70, 40));
 
-        labelGate1Barcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate1Barcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate1Barcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate1Barcelona1.setText("Gate 1");
-        labelGate1Barcelona1.setFocusable(false);
-        jPanel2.add(labelGate1Barcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 430, 130, 30));
+        labelGate2Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate2Barcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate2Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate2Barcelona.setText("Gate 2");
+        labelGate2Barcelona.setFocusable(false);
+        Panel.add(labelGate2Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 480, 70, 40));
 
-        labelGate2Barcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate2Barcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate2Barcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate2Barcelona1.setText("Gate 2");
-        labelGate2Barcelona1.setFocusable(false);
-        jPanel2.add(labelGate2Barcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 460, 130, 30));
+        labelGate3Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate3Barcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate3Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate3Barcelona.setText("Gate 3");
+        labelGate3Barcelona.setFocusable(false);
+        Panel.add(labelGate3Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 540, 70, 40));
 
-        labelGate3Barcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate3Barcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate3Barcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate3Barcelona1.setText("Gate 3");
-        labelGate3Barcelona1.setFocusable(false);
-        jPanel2.add(labelGate3Barcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 490, 130, 30));
+        labelGate4Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate4Barcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate4Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate4Barcelona.setText("Gate 4");
+        labelGate4Barcelona.setFocusable(false);
+        Panel.add(labelGate4Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 420, 70, 40));
 
-        labelGate4Barcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate4Barcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate4Barcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate4Barcelona1.setText("Gate 4");
-        labelGate4Barcelona1.setFocusable(false);
-        jPanel2.add(labelGate4Barcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 420, 130, 30));
+        labelGate5Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate5Barcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate5Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate5Barcelona.setText("Gate 5");
+        labelGate5Barcelona.setFocusable(false);
+        Panel.add(labelGate5Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 480, 70, 40));
 
-        labelGate5Barcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate5Barcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate5Barcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate5Barcelona1.setText("Gate 5");
-        labelGate5Barcelona1.setFocusable(false);
-        jPanel2.add(labelGate5Barcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 450, 130, 30));
+        labelGate6Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelGate6Barcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelGate6Barcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelGate6Barcelona.setText("Gate 6");
+        labelGate6Barcelona.setFocusable(false);
+        Panel.add(labelGate6Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 540, 70, 40));
 
-        labelGate6Barcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelGate6Barcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelGate6Barcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelGate6Barcelona1.setText("Gate 6");
-        labelGate6Barcelona1.setFocusable(false);
-        jPanel2.add(labelGate6Barcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 480, 130, 30));
+        labelTaxiAreaMadrid.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelTaxiAreaMadrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelTaxiAreaMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTaxiAreaMadrid.setText("Taxi Area");
+        labelTaxiAreaMadrid.setFocusable(false);
+        Panel.add(labelTaxiAreaMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 620, 130, 30));
 
-        labelTaxiAreaBarcelona1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        labelTaxiAreaBarcelona1.setForeground(new java.awt.Color(255, 255, 255));
-        labelTaxiAreaBarcelona1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTaxiAreaBarcelona1.setText("Taxi Area");
-        labelTaxiAreaBarcelona1.setFocusable(false);
-        jPanel2.add(labelTaxiAreaBarcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 550, 130, 30));
+        labelTaxiAreaBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelTaxiAreaBarcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelTaxiAreaBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTaxiAreaBarcelona.setText("Taxi Area");
+        labelTaxiAreaBarcelona.setFocusable(false);
+        Panel.add(labelTaxiAreaBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 620, 130, 30));
+
+        updaterBusToDowntownBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        updaterBusToDowntownBarcelona.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterBusToDowntownBarcelona.setFocusable(false);
+        Panel.add(updaterBusToDowntownBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1460, 250, 110, 30));
+
+        updaterBarcelonaCurrentPassengers.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        updaterBarcelonaCurrentPassengers.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        updaterBarcelonaCurrentPassengers.setToolTipText("");
+        updaterBarcelonaCurrentPassengers.setFocusable(false);
+        updaterBarcelonaCurrentPassengers.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Panel.add(updaterBarcelonaCurrentPassengers, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 180, 90, 40));
+
+        updaterMadridCurrentPassengers.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        updaterMadridCurrentPassengers.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        updaterMadridCurrentPassengers.setToolTipText("");
+        updaterMadridCurrentPassengers.setFocusable(false);
+        updaterMadridCurrentPassengers.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        Panel.add(updaterMadridCurrentPassengers, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 190, 90, 30));
 
         labelNumberPassengersMadridAirport.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         labelNumberPassengersMadridAirport.setForeground(new java.awt.Color(255, 255, 255));
         labelNumberPassengersMadridAirport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelNumberPassengersMadridAirport.setText("Passengers at the Airport");
         labelNumberPassengersMadridAirport.setFocusable(false);
-        jPanel2.add(labelNumberPassengersMadridAirport, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 240, 30));
+        Panel.add(labelNumberPassengersMadridAirport, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 240, 30));
 
-        updaterMadridCurrentPassengers.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        updaterMadridCurrentPassengers.setForeground(new java.awt.Color(255, 255, 255));
-        updaterMadridCurrentPassengers.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel2.add(updaterMadridCurrentPassengers, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 180, 80, 30));
+        labelNumberPassengersBarcelonaAirport.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        labelNumberPassengersBarcelonaAirport.setForeground(new java.awt.Color(255, 255, 255));
+        labelNumberPassengersBarcelonaAirport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelNumberPassengersBarcelonaAirport.setText("Passengers at the Airport");
+        labelNumberPassengersBarcelonaAirport.setFocusable(false);
+        Panel.add(labelNumberPassengersBarcelonaAirport, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 180, 240, 40));
 
-        jFormattedTextField1.setText("jFormattedTextField1");
-        jPanel2.add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 220, -1, -1));
+        updaterGate6Madrid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate6Madrid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate6Madrid.setFocusable(false);
+        Panel.add(updaterGate6Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 540, 290, 40));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 800));
-        jPanel2.getAccessibleContext().setAccessibleDescription("");
+        updaterGate5Madrid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate5Madrid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate5Madrid.setFocusable(false);
+        Panel.add(updaterGate5Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 480, 290, 40));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 800));
+        updaterGate4Madrid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate4Madrid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate4Madrid.setFocusable(false);
+        Panel.add(updaterGate4Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 420, 290, 40));
+
+        updaterGate3Madrid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate3Madrid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate3Madrid.setFocusable(false);
+        Panel.add(updaterGate3Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 540, 290, 40));
+
+        updaterGate2Madrid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate2Madrid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate2Madrid.setFocusable(false);
+        Panel.add(updaterGate2Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, 290, 40));
+
+        updaterGate1Madrid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate1Madrid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate1Madrid.setFocusable(false);
+        Panel.add(updaterGate1Madrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 420, 290, 40));
+
+        updaterGate1Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate1Barcelona.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate1Barcelona.setFocusable(false);
+        Panel.add(updaterGate1Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 420, 290, 40));
+
+        updaterGate2Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate2Barcelona.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate2Barcelona.setFocusable(false);
+        Panel.add(updaterGate2Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 480, 290, 40));
+
+        updaterGate3Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate3Barcelona.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate3Barcelona.setFocusable(false);
+        Panel.add(updaterGate3Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 540, 290, 40));
+
+        updaterGate4Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate4Barcelona.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate4Barcelona.setFocusable(false);
+        Panel.add(updaterGate4Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1290, 420, 290, 40));
+
+        updaterGate5Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate5Barcelona.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate5Barcelona.setFocusable(false);
+        Panel.add(updaterGate5Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1290, 480, 290, 40));
+
+        updaterGate6Barcelona.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        updaterGate6Barcelona.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterGate6Barcelona.setFocusable(false);
+        Panel.add(updaterGate6Barcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1290, 540, 290, 40));
+
+        labelBusTransfersDowntownBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelBusTransfersDowntownBarcelona.setForeground(new java.awt.Color(255, 255, 255));
+        labelBusTransfersDowntownBarcelona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelBusTransfersDowntownBarcelona.setText("Transfers Downtown");
+        labelBusTransfersDowntownBarcelona.setFocusable(false);
+        Panel.add(labelBusTransfersDowntownBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 250, 220, 30));
+
+        updaterBusToAirportBarcelona.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        updaterBusToAirportBarcelona.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterBusToAirportBarcelona.setFocusable(false);
+        Panel.add(updaterBusToAirportBarcelona, new org.netbeans.lib.awtextra.AbsoluteConstraints(1460, 190, 110, 30));
+
+        labelBusTransfersAirportMadrid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelBusTransfersAirportMadrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelBusTransfersAirportMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelBusTransfersAirportMadrid.setText("Transfers Airport");
+        labelBusTransfersAirportMadrid.setFocusable(false);
+        Panel.add(labelBusTransfersAirportMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 190, 30));
+
+        labelBusTransfersDowntownMadrid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelBusTransfersDowntownMadrid.setForeground(new java.awt.Color(255, 255, 255));
+        labelBusTransfersDowntownMadrid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelBusTransfersDowntownMadrid.setText("Transfers Downtown");
+        labelBusTransfersDowntownMadrid.setFocusable(false);
+        Panel.add(labelBusTransfersDowntownMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 250, 220, 30));
+
+        updaterBusToAirportMadrid.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        updaterBusToAirportMadrid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterBusToAirportMadrid.setFocusable(false);
+        Panel.add(updaterBusToAirportMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 190, 110, 30));
+
+        updaterBusToDowntownMadrid.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        updaterBusToDowntownMadrid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        updaterBusToDowntownMadrid.setFocusable(false);
+        Panel.add(updaterBusToDowntownMadrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 250, 110, 30));
+
+        getContentPane().add(Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 800));
 
         pack();
         setLocationRelativeTo(null);
@@ -469,62 +435,119 @@ public class UserInterface extends javax.swing.JFrame {
 
     // Method to update the User Interface.
     public void updateInterface() {
-        labelMadridAirport.setText(String.valueOf(madridAirport.getCurrentPassengers()));
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+
+        // Update number of passengers currently at Madrid airport.
+        String formattedNumber = numberFormat.format(madridAirport.getCurrentPassengers());
+        updaterMadridCurrentPassengers.setText(formattedNumber);
+
+        // Update number of passengers currently at Barcelona airport.
+        formattedNumber = numberFormat.format(barcelonaAirport.getCurrentPassengers());
+        updaterBarcelonaCurrentPassengers.setText(formattedNumber);
+
+        // Update Gates 1-6 status at Madrid airport.
+        for (int i = 0; i < 6; i++) {
+            BoardingGate gate = madridAirport.getBoardingGates(i);
+
+            String status = gate.getAirplaneStatus();
+            switch (i) {
+                case 0 ->
+                    updaterGate1Madrid.setText(status);
+                case 1 ->
+                    updaterGate2Madrid.setText(status);
+                case 2 ->
+                    updaterGate3Madrid.setText(status);
+                case 3 ->
+                    updaterGate4Madrid.setText(status);
+                case 4 ->
+                    updaterGate5Madrid.setText(status);
+                case 5 ->
+                    updaterGate6Madrid.setText(status);
+            }
+        }
+
+        // Update Gates 1-6 status at Madrid airport.
+        for (int i = 0; i < 6; i++) {
+            BoardingGate gate = barcelonaAirport.getBoardingGates(i);
+
+            String status = gate.getAirplaneStatus();
+            switch (i) {
+                case 0 ->
+                    updaterGate1Barcelona.setText(status);
+                case 1 ->
+                    updaterGate2Barcelona.setText(status);
+                case 2 ->
+                    updaterGate3Barcelona.setText(status);
+                case 3 ->
+                    updaterGate4Barcelona.setText(status);
+                case 4 ->
+                    updaterGate5Barcelona.setText(status);
+                case 5 ->
+                    updaterGate6Barcelona.setText(status);
+            }
+        }
+
+        // Update Bus to Airport and Downtown statuses.
+        updaterBusToAirportMadrid.setText(madridAirport.getStatusBusToAirport());
+        updaterBusToDowntownMadrid.setText(madridAirport.getStatusBusToDowntown());
+
+        updaterBusToAirportBarcelona.setText(barcelonaAirport.getStatusBusToAirport());
+        updaterBusToDowntownBarcelona.setText(barcelonaAirport.getStatusBusToDowntown());
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel Panel;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel labelBarcelonaAirport;
+    private javax.swing.JLabel labelBusTransfersAirportBarcelona;
+    private javax.swing.JLabel labelBusTransfersAirportMadrid;
+    private javax.swing.JLabel labelBusTransfersDowntownBarcelona;
+    private javax.swing.JLabel labelBusTransfersDowntownMadrid;
     private javax.swing.JLabel labelGate1Barcelona;
-    private javax.swing.JLabel labelGate1Barcelona1;
     private javax.swing.JLabel labelGate1Madrid;
-    private javax.swing.JLabel labelGate1Madrid1;
     private javax.swing.JLabel labelGate2Barcelona;
-    private javax.swing.JLabel labelGate2Barcelona1;
     private javax.swing.JLabel labelGate2Madrid;
-    private javax.swing.JLabel labelGate2Madrid1;
     private javax.swing.JLabel labelGate3Barcelona;
-    private javax.swing.JLabel labelGate3Barcelona1;
     private javax.swing.JLabel labelGate3Madrid;
-    private javax.swing.JLabel labelGate3Madrid1;
     private javax.swing.JLabel labelGate4Barcelona;
-    private javax.swing.JLabel labelGate4Barcelona1;
     private javax.swing.JLabel labelGate4Madrid;
-    private javax.swing.JLabel labelGate4Madrid1;
     private javax.swing.JLabel labelGate5Barcelona;
-    private javax.swing.JLabel labelGate5Barcelona1;
     private javax.swing.JLabel labelGate5Madrid;
-    private javax.swing.JLabel labelGate5Madrid1;
     private javax.swing.JLabel labelGate6Barcelona;
-    private javax.swing.JLabel labelGate6Barcelona1;
     private javax.swing.JLabel labelGate6Madrid;
-    private javax.swing.JLabel labelGate6Madrid1;
     private javax.swing.JLabel labelHangarBarcelona;
-    private javax.swing.JLabel labelHangarBarcelona1;
     private javax.swing.JLabel labelHangarMadrid;
-    private javax.swing.JLabel labelHangarMadrid1;
     private javax.swing.JLabel labelMadridAirport;
     private javax.swing.JLabel labelMaintenanceBarcelona;
-    private javax.swing.JLabel labelMaintenanceBarcelona1;
     private javax.swing.JLabel labelMaintenanceMadrid;
-    private javax.swing.JLabel labelMaintenanceMadrid1;
     private javax.swing.JLabel labelNumberPassengersBarcelonaAirport;
     private javax.swing.JLabel labelNumberPassengersMadridAirport;
     private javax.swing.JLabel labelParkingAreaBarcelona;
-    private javax.swing.JLabel labelParkingAreaBarcelona1;
     private javax.swing.JLabel labelParkingAreaMadrid;
-    private javax.swing.JLabel labelParkingAreaMadrid1;
     private javax.swing.JLabel labelTaxiAreaBarcelona;
-    private javax.swing.JLabel labelTaxiAreaBarcelona1;
     private javax.swing.JLabel labelTaxiAreaMadrid;
-    private javax.swing.JLabel labelTaxiAreaMadrid1;
     private javax.swing.JButton pauseButton;
     private javax.swing.JButton resumeButton;
-    private javax.swing.JLabel updaterMadridCurrentPassengers;
+    private javax.swing.JFormattedTextField updaterBarcelonaCurrentPassengers;
+    private javax.swing.JTextField updaterBusToAirportBarcelona;
+    private javax.swing.JTextField updaterBusToAirportMadrid;
+    private javax.swing.JTextField updaterBusToDowntownBarcelona;
+    private javax.swing.JTextField updaterBusToDowntownMadrid;
+    private javax.swing.JTextField updaterGate1Barcelona;
+    private javax.swing.JTextField updaterGate1Madrid;
+    private javax.swing.JTextField updaterGate2Barcelona;
+    private javax.swing.JTextField updaterGate2Madrid;
+    private javax.swing.JTextField updaterGate3Barcelona;
+    private javax.swing.JTextField updaterGate3Madrid;
+    private javax.swing.JTextField updaterGate4Barcelona;
+    private javax.swing.JTextField updaterGate4Madrid;
+    private javax.swing.JTextField updaterGate5Barcelona;
+    private javax.swing.JTextField updaterGate5Madrid;
+    private javax.swing.JTextField updaterGate6Barcelona;
+    private javax.swing.JTextField updaterGate6Madrid;
+    private javax.swing.JFormattedTextField updaterMadridCurrentPassengers;
     // End of variables declaration//GEN-END:variables
 }
