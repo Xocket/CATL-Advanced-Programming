@@ -15,7 +15,7 @@ public class Airport {
     private TaxiArea taxiArea = new TaxiArea();
 
     private String airportName;
-    
+
     private String statusBusToDowntown;
     private String statusBusToAirport;
 
@@ -93,6 +93,5 @@ public class Airport {
     public void setStatusBusToAirport(String statusBusToAirport) {
         this.statusBusToAirport = statusBusToAirport;
     }
-    
-    
+
 }

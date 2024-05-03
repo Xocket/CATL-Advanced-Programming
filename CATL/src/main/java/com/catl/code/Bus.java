@@ -8,19 +8,21 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Bus implements Runnable {
 
     // Variable definition.
-    private final String id;            // Bus ID with format "B-XXXX".
-    private final String airportName;   // Name of the airport it belongs to.
-    private final Airport airport;      // Airport it belongs to.
-    private int numPassengers;          // Number of passengers it's carrying.
-    private final Log log;              // Log object to log events.
+    private final String id;                    // Bus ID with format "B-XXXX".
+    private final String airportName;           // Name of the airport it belongs to.
+    private final Airport airport;              // Airport it belongs to.
+    private int numPassengers;                  // Number of passengers it's carrying.
+    private final Log log;                      // Log object to log events.
+    private final PauseControl pauseControl;    // Pause/Resume management.
 
     // Bus class constructor.
-    public Bus(String id, String airportName, Airport airport, Log log) {
+    public Bus(String id, String airportName, Airport airport, Log log, PauseControl pauseControl) {
         this.id = "B-" + id;
         this.airportName = airportName;
         this.airport = airport;
         this.numPassengers = 0;
         this.log = log;
+        this.pauseControl = pauseControl;
     }
 
     // Run method of the Bus class.
@@ -28,11 +30,17 @@ public class Bus implements Runnable {
     public void run() {
         // Continuous lifetime cycle of every bus.
         while (true) {
+            pauseControl.checkPaused();
             arriveDowntown();
+            pauseControl.checkPaused();
             boardPassengersDowntown();
+            pauseControl.checkPaused();
             goToAirport();
+            pauseControl.checkPaused();
             arriveAirport();
+            pauseControl.checkPaused();
             boardPassengersAirport();
+            pauseControl.checkPaused();
             goToDowntown();
         }
     }

@@ -13,6 +13,9 @@ public class Program {
         // Create Log object to store events.
         Log log = new Log();
 
+        // Pause/Resume handler.
+        PauseControl pauseControl = new PauseControl();
+
         // Create both airports.
         Airport madridAirport = new Airport("Madrid");
         Airport barcelonaAirport = new Airport("Barcelona");
@@ -25,18 +28,18 @@ public class Program {
         }
 
         // Initialize a UserInterface object and start the UI.
-        UserInterface ui = new UserInterface(madridAirport, barcelonaAirport);
+        UserInterface ui = new UserInterface(madridAirport, barcelonaAirport, pauseControl);
         ui.startInterface();
 
         // Create an instance of BusDispatcher.
-        BusDispatcher busDispatcher = new BusDispatcher(madridAirport, barcelonaAirport, log);
+        BusDispatcher busDispatcher = new BusDispatcher(madridAirport, barcelonaAirport, log, pauseControl);
 
         // Create a new thread with the instance of BusDispatcher and start it.
         Thread busDispatcherThread = new Thread(busDispatcher);
         busDispatcherThread.start();
 
         // Create an instance of AirplaneDispatcherS.
-        AirplaneDispatcher airplaneDispatcher = new AirplaneDispatcher(madridAirport, barcelonaAirport, log);
+        AirplaneDispatcher airplaneDispatcher = new AirplaneDispatcher(madridAirport, barcelonaAirport, log, pauseControl);
 
         // Create a new thread with the instance of AirplaneDispatcher and start it.
         Thread airplaneDispatcherThread = new Thread(airplaneDispatcher);

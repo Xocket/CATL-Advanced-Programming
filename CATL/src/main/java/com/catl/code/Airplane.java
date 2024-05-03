@@ -6,6 +6,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Airplane implements Runnable {
 
+    private final PauseControl pauseControl;
+
     private String id;
     private Log log;
 
@@ -33,7 +35,7 @@ public class Airplane implements Runnable {
         this.bg = bg;
     }
 
-    public Airplane(String id, Airport currentAirport, Airport destinationAirport, Log log) {
+    public Airplane(String id, Airport currentAirport, Airport destinationAirport, Log log, PauseControl pauseControl) {
         this.id = this.getRandomLetters() + "-" + id;
 
         this.currentAirport = currentAirport;
@@ -43,13 +45,18 @@ public class Airplane implements Runnable {
         this.capacity = ThreadLocalRandom.current().nextInt(100, 301);
         this.bg = null;
         this.numPassengers = 0;
+        this.pauseControl = pauseControl;
     }
 
     @Override
     public void run() {
+        pauseControl.checkPaused();
         accessHangar();
+        pauseControl.checkPaused();
         accessParkingArea();
+        pauseControl.checkPaused();
         boardPassengers();
+        pauseControl.checkPaused();
 
         try {
             Thread.sleep(100000000);
@@ -123,6 +130,10 @@ public class Airplane implements Runnable {
         System.out.println(embarkDisembark++);
 
         for (int i = 0; i < 3; i++) {
+
+            // Wait if paused.
+            pauseControl.checkPaused();
+
             this.addPassengers(this.getCurrentAirport().offloadPassengers(this.getCapacity() - this.getNumPassengers()));
             bg.setAirplaneStatus(this);
             try {
@@ -139,7 +150,6 @@ public class Airplane implements Runnable {
                     System.out.println("ERROR - Waiting for passengers boardPassengers()");
                 }
             }
-            System.out.println("THIS NUMBER OF PASSENGERS OF FLIGHT " + getID() + " " + this.numPassengers);
         }
 
         // Notify the boarding gate that it has finished boarding passengers.
