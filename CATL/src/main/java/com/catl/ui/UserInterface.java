@@ -118,15 +118,15 @@ public class UserInterface extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMinimumSize(new java.awt.Dimension(1600, 940));
-        setPreferredSize(new java.awt.Dimension(1600, 940));
+        setMinimumSize(null);
+        setPreferredSize(null);
         setSize(new java.awt.Dimension(1600, 940));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Panel.setBackground(new java.awt.Color(30, 30, 30));
-        Panel.setMinimumSize(new java.awt.Dimension(1600, 940));
+        Panel.setMinimumSize(null);
         Panel.setName("Airport Simulator"); // NOI18N
-        Panel.setPreferredSize(new java.awt.Dimension(1600, 940));
+        Panel.setPreferredSize(null);
         Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         resumeButton.setBackground(new java.awt.Color(85, 88, 90));
