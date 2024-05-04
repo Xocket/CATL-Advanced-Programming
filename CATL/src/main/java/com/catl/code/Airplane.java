@@ -137,7 +137,7 @@ public class Airplane implements Runnable {
             this.addPassengers(this.getCurrentAirport().offloadPassengers(this.getCapacity() - this.getNumPassengers()));
             bg.setAirplaneStatus(this);
             try {
-                Thread.sleep(ThreadLocalRandom.current().nextInt(10, 3001));
+                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Boarding passengers attempts boardPassengers()");
             }
@@ -145,7 +145,7 @@ public class Airplane implements Runnable {
                 break;
             } else {
                 try {
-                    Thread.sleep(ThreadLocalRandom.current().nextInt(10, 5001));
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
                 } catch (InterruptedException e) {
                     System.out.println("ERROR - Waiting for passengers boardPassengers()");
                 }
