@@ -38,4 +38,17 @@ public class Hangar {
     public boolean isAtHead(Airplane airplane) {
         return airplaneQueue.peek().equals(airplane);
     }
+
+    public String getStatus() {
+        StringBuilder sb = new StringBuilder();
+        for (Airplane airplane : this.getAirplaneQueue()) {
+            sb.append(airplane.getID()).append(", ");
+        }
+        return sb.toString();
+    }
+
+    public ConcurrentLinkedQueue<Airplane> getAirplaneQueue() {
+        return airplaneQueue;
+    }
+
 }

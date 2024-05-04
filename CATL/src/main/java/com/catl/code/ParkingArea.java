@@ -45,4 +45,16 @@ public class ParkingArea {
         return maxSize.get();
     }
 
+    public String getStatus() {
+        StringBuilder sb = new StringBuilder();
+        for (Airplane airplane : this.getAirplaneQueue()) {
+            sb.append(airplane.getID()).append(", ");
+        }
+        return sb.toString();
+    }
+
+    public BlockingQueue<Airplane> getAirplaneQueue() {
+        return airplaneQueue;
+    }
+
 }
