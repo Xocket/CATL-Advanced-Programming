@@ -18,6 +18,7 @@ public class Airplane implements Runnable {
     private Airport destinationAirport;
 
     private int embarkDisembark;
+    private int takeOffLand;
 
     public boolean isNotified() {
         return isNotified;
@@ -35,6 +36,12 @@ public class Airplane implements Runnable {
         this.bg = bg;
     }
 
+    private Runway rw;
+
+    public void setRunway(Runway rw) {
+        this.rw = rw;
+    }
+
     public Airplane(String id, Airport currentAirport, Airport destinationAirport, Log log, PauseControl pauseControl) {
         this.id = this.getRandomLetters() + "-" + id;
 
@@ -46,6 +53,8 @@ public class Airplane implements Runnable {
         this.bg = null;
         this.numPassengers = 0;
         this.pauseControl = pauseControl;
+        this.embarkDisembark = 0;
+        this.takeOffLand = 0;
     }
 
     @Override
@@ -57,6 +66,10 @@ public class Airplane implements Runnable {
         pauseControl.checkPaused();
         boardPassengers();
         pauseControl.checkPaused();
+        accessTaxiArea();
+        pauseControl.checkPaused();
+        accessRunway();
+        pauseControl.checkPaused();
 
         try {
             Thread.sleep(100000000);
@@ -65,7 +78,7 @@ public class Airplane implements Runnable {
 
 
         /*
-            accessTaxiArea();
+            
             takeOff();
             fly();
             land();
@@ -127,7 +140,7 @@ public class Airplane implements Runnable {
 
         bg.setAirplaneStatus(this);
 
-        System.out.println(embarkDisembark++);
+        embarkDisembark++;
 
         for (int i = 0; i < 3; i++) {
 
@@ -152,6 +165,52 @@ public class Airplane implements Runnable {
             }
         }
 
+        // Notify the boarding gate that it has finished boarding passengers.
+        synchronized (this) {
+            notify();
+        }
+    }
+
+    private void accessTaxiArea() {
+        currentAirport.getTaxiArea().addAirplane(this);
+        System.out.println("Airplane " + getID() + " has entered the " + this.getCurrentAirport().getAirportName() + " airport Taxi Area.");
+
+        // Before requesting runway, pilots make checks for 1-5 seconds.
+        int durationChecks = ThreadLocalRandom.current().nextInt(1000, 5001);
+        System.out.println("Pilots of flight " + this.getOccupancyID() + " performing pre-flight checks for " + String.format("%.1f", (double) durationChecks / 1000) + " s.");
+
+        try {
+            Thread.sleep(durationChecks);
+        } catch (InterruptedException e) {
+            System.out.println("ERROR - Performing pre-flight checks.");
+        }
+
+        currentAirport.getTaxiArea().makeAirplaneReady(this);
+    }
+
+    public void accessRunway() {
+        // Wait until a runway this airplane.
+        synchronized (this) {
+            while (!isNotified) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    System.out.println("ERROR - Boarding passengers.");
+                }
+            }
+            isNotified = false;
+        }
+
+        rw.setAirplaneStatus(this);
+
+        takeOffLand++;
+
+        System.out.println("shit happening");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+        }
+        System.out.println("shit happeninasdasdSDASDAhappeninasdasdSDASDASDASDhappeninasdasdSDASDASDASDhappeninasdasdSDASDASDASDhappeninasdasdSDASDASDASDSDASD ASD ASD ASD AASD ASDg");
         // Notify the boarding gate that it has finished boarding passengers.
         synchronized (this) {
             notify();
@@ -217,4 +276,9 @@ public class Airplane implements Runnable {
     public String toString() {
         return "Airplane{" + "id=" + id + '}';
     }
+
+    int getTakeOffLand() {
+        return takeOffLand;
+    }
+
 }

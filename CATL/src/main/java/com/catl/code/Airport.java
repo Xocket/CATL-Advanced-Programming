@@ -9,6 +9,9 @@ public class Airport {
     private BoardingGate[] boardingGates = new BoardingGate[6];
     private Thread[] boardingGateThreads = new Thread[6];
 
+    private Runway[] runways = new Runway[4];
+    private Thread[] runwaysThreads = new Thread[4];
+
     private Hangar hangar = new Hangar();
     private MaintenanceHall maintenanceHall = new MaintenanceHall(20);
     private ParkingArea parkingArea = new ParkingArea();
@@ -29,6 +32,13 @@ public class Airport {
             this.boardingGates[i] = new BoardingGate(this.getParkingArea(), i);
             this.boardingGateThreads[i] = new Thread(boardingGates[i]);
             this.boardingGateThreads[i].start();
+        }
+
+        // Initialize each Runway in the runways array and start each thread.
+        for (int i = 0; i < 4; i++) {
+            this.runways[i] = new Runway(this.getTaxiArea(), i);
+            this.runwaysThreads[i] = new Thread(runways[i]);
+            this.runwaysThreads[i].start();
         }
         this.airportName = airportName;
     }
@@ -78,6 +88,10 @@ public class Airport {
         return boardingGates[i];
     }
 
+    public Runway getRunway(int i) {
+        return runways[i];
+    }
+
     public String getStatusBusToDowntown() {
         return statusBusToDowntown;
     }
@@ -92,6 +106,10 @@ public class Airport {
 
     public void setStatusBusToAirport(String statusBusToAirport) {
         this.statusBusToAirport = statusBusToAirport;
+    }
+
+    public TaxiArea getTaxiArea() {
+        return taxiArea;
     }
 
 }
