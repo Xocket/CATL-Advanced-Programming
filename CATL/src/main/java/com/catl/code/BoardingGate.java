@@ -69,9 +69,9 @@ public class BoardingGate implements Runnable {
 
         // Check if embarkDisembark is odd or even.
         if (embarkDisembark % 2 == 0) {
-            airplaneStatus = "Disembark " + airplaneID;
-        } else {
             airplaneStatus = "Boarding " + airplaneID;
+        } else {
+            airplaneStatus = "Disembark " + airplaneID;
         }
     }
 

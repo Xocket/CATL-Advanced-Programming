@@ -50,6 +50,11 @@ public class ParkingArea {
         for (Airplane airplane : this.getAirplaneQueue()) {
             sb.append(airplane.getID()).append(", ");
         }
+
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 2);
+        }
+
         return sb.toString();
     }
 

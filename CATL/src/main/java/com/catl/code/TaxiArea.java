@@ -33,24 +33,20 @@ public class TaxiArea {
 
     // Remove an airplane from the head of the queue and add it to the readyAirplaneQueue.
     public void makeAirplaneReady(Airplane airplane) {
-        lock.lock();
-        try {
-            airplaneQueue.remove(airplane);
-            readyAirplaneQueue.add(airplane);
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    // Add an airplane to the readyAirplaneQueue.
-    public void addReadyAirplane(Airplane airplane) {
         readyAirplaneQueue.add(airplane);
     }
 
     // Remove and returns an airplane from the head of the readyAirplaneQueue.
     public Airplane removeReadyAirplane() {
         try {
-            return readyAirplaneQueue.take();
+            Airplane airplane = readyAirplaneQueue.take();
+            lock.lock();
+            try {
+                airplaneQueue.remove(airplane);
+            } finally {
+                lock.unlock();
+            }
+            return airplane;
         } catch (InterruptedException e) {
             System.out.println("ERROR - Removing airplane from Parking Area.");
         }
@@ -65,6 +61,23 @@ public class TaxiArea {
     // Get the maximum number of elements in the queue at once.
     public int getMaxSize() {
         return maxSize.get();
+    }
+
+    public String getStatus() {
+        StringBuilder sb = new StringBuilder();
+        lock.lock();
+        try {
+            for (Airplane airplane : airplaneQueue) {
+                sb.append(airplane.getID()).append(", ");
+            }
+        } finally {
+            lock.unlock();
+        }
+        // Remove the last comma and space
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 2);
+        }
+        return sb.toString();
     }
 
 }

@@ -67,9 +67,9 @@ public class Runway implements Runnable {
 
         // Check if takeOffLand is odd or even.
         if (takeOffLand % 2 == 0) {
-            airplaneStatus = "Landing " + airplaneID;
-        } else {
             airplaneStatus = "Take off " + airplaneID;
+        } else {
+            airplaneStatus = "Landing " + airplaneID;
         }
     }
 

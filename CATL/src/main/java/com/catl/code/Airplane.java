@@ -140,8 +140,6 @@ public class Airplane implements Runnable {
 
         bg.setAirplaneStatus(this);
 
-        embarkDisembark++;
-
         for (int i = 0; i < 3; i++) {
 
             // Wait if paused.
@@ -164,6 +162,8 @@ public class Airplane implements Runnable {
                 }
             }
         }
+
+        embarkDisembark++;
 
         // Notify the boarding gate that it has finished boarding passengers.
         synchronized (this) {
@@ -203,14 +203,12 @@ public class Airplane implements Runnable {
 
         rw.setAirplaneStatus(this);
 
-        takeOffLand++;
-
-        System.out.println("shit happening");
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
         }
-        System.out.println("shit happeninasdasdSDASDAhappeninasdasdSDASDASDASDhappeninasdasdSDASDASDASDhappeninasdasdSDASDASDASDhappeninasdasdSDASDASDASDSDASD ASD ASD ASD AASD ASDg");
+
+        takeOffLand++;
         // Notify the boarding gate that it has finished boarding passengers.
         synchronized (this) {
             notify();

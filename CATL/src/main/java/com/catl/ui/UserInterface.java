@@ -118,15 +118,12 @@ public class UserInterface extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMinimumSize(null);
         setPreferredSize(null);
         setSize(new java.awt.Dimension(1600, 940));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Panel.setBackground(new java.awt.Color(30, 30, 30));
-        Panel.setMinimumSize(null);
         Panel.setName("Airport Simulator"); // NOI18N
-        Panel.setPreferredSize(null);
         Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         resumeButton.setBackground(new java.awt.Color(85, 88, 90));
@@ -618,13 +615,11 @@ public class UserInterface extends javax.swing.JFrame {
     private void resumeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resumeButtonMouseClicked
         pauseControl.resume();
         resumeUpdates();
-        System.out.println("THREADS RESUMED.");
     }//GEN-LAST:event_resumeButtonMouseClicked
 
     private void pauseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pauseButtonMouseClicked
         pauseControl.pause();
         pauseUpdates();
-        System.out.println("THREADS PAUSED.");
     }//GEN-LAST:event_pauseButtonMouseClicked
 
     public void startInterface() {
@@ -635,9 +630,10 @@ public class UserInterface extends javax.swing.JFrame {
                     setVisible(true);
 
                     // Perform periodic updates on the JLabel using SwingUtilities.invokeLater()
-                    Timer timer = new Timer(25, e -> {
+                    Timer timer = new Timer(20, e -> {
                         if (!isPaused()) {
                             updateInterface();
+                            System.out.println("BRUH");
                         }
                     });
 
@@ -724,6 +720,10 @@ public class UserInterface extends javax.swing.JFrame {
         // Update the parking areas.
         updaterParkingAreaMadrid.setText(madridAirport.getParkingArea().getStatus());
         updaterParkingAreaBarcelona.setText(barcelonaAirport.getParkingArea().getStatus());
+
+        // Update the TaxiArea.
+        updaterTaxiMadrid.setText(madridAirport.getTaxiArea().getStatus());
+        updaterTaxiBarcelona.setText(barcelonaAirport.getTaxiArea().getStatus());
 
         // Update Runways 1-4 status at Madrid airport.
         for (int i = 0; i < 4; i++) {
