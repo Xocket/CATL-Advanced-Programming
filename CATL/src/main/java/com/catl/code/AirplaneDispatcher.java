@@ -45,6 +45,7 @@ public class AirplaneDispatcher implements Runnable {
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Dispatching airplanes.");
             }
+
         }
     }
 

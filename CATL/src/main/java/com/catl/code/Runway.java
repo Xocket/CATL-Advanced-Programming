@@ -1,57 +1,16 @@
 // Package declaration.
 package com.catl.code;
 
-// Importing classes.
 // Runway class which defines the behavior of each one of the four runways.
-public class Runway implements Runnable {
+public class Runway {
 
     private final int runwayNumber;
-    private final TaxiArea taxiArea;
     private Airplane airplane;
     private String airplaneStatus;
 
-    public Runway(TaxiArea taxiArea, int runwayNumber) {
-        this.taxiArea = taxiArea;
+    public Runway(int runwayNumber) {
         this.runwayNumber = runwayNumber;
         this.airplane = null;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            // Check if the boarding gate is unoccupied.
-            if (airplane == null) {
-                // Take an airplane from the parking area.
-                airplane = taxiArea.removeReadyAirplane();
-            }
-
-            // Process boarding.
-            airplane.setRunway(this);
-            //setAirplaneStatus(airplane);
-
-            this.takeOff(airplane);
-            airplane = null;
-            setAirplaneStatus(airplane);
-        }
-    }
-
-    private void takeOff(Airplane airplane) {
-        // Notify the airplane that it has been accepted by a boarding gate.
-        synchronized (airplane) {
-            airplane.setIsNotified(true);
-            airplane.notify();
-            try {
-                // Wait until the airplane finishes boarding passengers.
-                airplane.wait();
-            } catch (InterruptedException e) {
-                System.out.println("ERROR - Runway.");
-            }
-        }
-
-        // Print in console.
-        System.out.println("Airplane " + airplane.getID() + " with occupancy " + airplane.getOccupancy() + " has boarded in runway " + this.getRunwayNumber());
-        // Log event.
-        airplane.getLog().logEvent(airplane.getCurrentAirport().getAirportName(), "Airplane " + airplane.getID() + " with occupancy " + airplane.getOccupancy() + " has boarded in Gate " + this.getRunwayNumber());
     }
 
     public void setAirplaneStatus(Airplane airplane) {
@@ -86,5 +45,9 @@ public class Runway implements Runnable {
 
     public int getRunwayNumber() {
         return runwayNumber;
+    }
+
+    public void setAirplaneStatusNull() {
+        this.airplaneStatus = "";
     }
 }

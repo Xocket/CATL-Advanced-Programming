@@ -2,47 +2,72 @@
 package com.catl.code;
 
 // Importing classes.
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
+// Airport class which contains all the zones and methods for airplanes to navigate them.
 public class Airport {
 
-    private BoardingGate[] boardingGates = new BoardingGate[6];
-    private Thread[] boardingGateThreads = new Thread[6];
+    // Create an array of 6 BoardingGate objects.
+    private final BoardingGate[] boardingGates;
 
-    private Runway[] runways = new Runway[4];
-    private Thread[] runwaysThreads = new Thread[4];
+    // A semaphore to protect the boardingGates array.
+    private final Semaphore semaphoreBG;
+    // An array of locks to protect each individual BoardingGate.
+    private final ReentrantLock[] locksBG;
 
+    // Create an array of 4 Runway objects.
+    private final Runway[] runways;
+
+    // A semaphore to protect the runways array.
+    private final Semaphore semaphoreR;
+    // An array of locks to protect each individual BoardingGate.
+    private final ReentrantLock[] locksR;
+
+    // Airport class constructor.
+    public Airport(String airportName) {
+
+        // Initialize the airport name.
+        this.airportName = airportName;
+
+        // Initialize the boardingGates and runways arrays.
+        this.boardingGates = new BoardingGate[6];
+        this.runways = new Runway[4];
+
+        // Initialize each semaphore.
+        this.semaphoreBG = new Semaphore(6, true);
+        this.semaphoreR = new Semaphore(4, true);
+
+        // Initialize the locksBG and the locksR arrays.
+        this.locksBG = new ReentrantLock[6];
+        this.locksR = new ReentrantLock[4];
+
+        // Initialize each BoardingGate object and its associated lock.
+        for (int i = 0; i < 6; i++) {
+            this.boardingGates[i] = new BoardingGate(i);
+            this.locksBG[i] = new ReentrantLock();
+        }
+
+        // Initialize each Runway object and its associated lock.
+        for (int i = 0; i < 4; i++) {
+            this.runways[i] = new Runway(i);
+            this.locksR[i] = new ReentrantLock();
+        }
+    }
+
+    // TODO: finish commenting these.
     private Hangar hangar = new Hangar();
     private MaintenanceHall maintenanceHall = new MaintenanceHall(20);
     private ParkingArea parkingArea = new ParkingArea();
     private TaxiArea taxiArea = new TaxiArea();
     private Airway airway = new Airway();
-
     private String airportName;
-
     private String statusBusToDowntown;
     private String statusBusToAirport;
 
-    // TODO: Change variable from AtomicInteger to int (using locks) later on if necessary.
     private AtomicInteger currentPassengers = new AtomicInteger(0);
     private AtomicInteger totalPassengers = new AtomicInteger(0);
-
-    public Airport(String airportName) {
-        // Initialize each Boarding Gate in the boardingGates array and start each thread.
-        for (int i = 0; i < 6; i++) {
-            this.boardingGates[i] = new BoardingGate(this.getParkingArea(), i);
-            this.boardingGateThreads[i] = new Thread(boardingGates[i]);
-            this.boardingGateThreads[i].start();
-        }
-
-        // Initialize each Runway in the runways array and start each thread.
-        for (int i = 0; i < 4; i++) {
-            this.runways[i] = new Runway(this.getTaxiArea(), i);
-            this.runwaysThreads[i] = new Thread(runways[i]);
-            this.runwaysThreads[i].start();
-        }
-        this.airportName = airportName;
-    }
 
     // Method to add passengers.
     public void addPassengers(int passengers) {
@@ -115,5 +140,21 @@ public class Airport {
 
     public Airway getAirway() {
         return airway;
+    }
+
+    public Semaphore getSemaphoreBG() {
+        return semaphoreBG;
+    }
+
+    public ReentrantLock[] getLocksBG() {
+        return locksBG;
+    }
+
+    public Semaphore getSemaphoreR() {
+        return semaphoreR;
+    }
+
+    public ReentrantLock[] getLocksR() {
+        return locksR;
     }
 }

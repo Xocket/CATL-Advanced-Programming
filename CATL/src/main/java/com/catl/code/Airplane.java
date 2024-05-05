@@ -2,7 +2,11 @@
 package com.catl.code;
 
 // Importing classes.
+import java.time.Duration;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Airplane implements Runnable {
 
@@ -19,6 +23,8 @@ public class Airplane implements Runnable {
 
     private int embarkDisembark;
     private int takeOffLand;
+
+    private boolean isBorn;
 
     public boolean isNotified() {
         return isNotified;
@@ -55,6 +61,7 @@ public class Airplane implements Runnable {
         this.pauseControl = pauseControl;
         this.embarkDisembark = 0;
         this.takeOffLand = 0;
+        this.isBorn = true;
     }
 
     @Override
@@ -64,8 +71,15 @@ public class Airplane implements Runnable {
         pauseControl.checkPaused();
         accessParkingArea();
         pauseControl.checkPaused();
-        boardPassengers();
+        processBoarding();
         pauseControl.checkPaused();
+
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+        }
+
+        /*
         accessTaxiArea();
         pauseControl.checkPaused();
         accessRunway();
@@ -76,101 +90,105 @@ public class Airplane implements Runnable {
         pauseControl.checkPaused();
         requestLanding();
         pauseControl.checkPaused();
-
-        try {
-            Thread.sleep(100000000);
-        } catch (InterruptedException e) {
-        }
-
-
-        /*
-            debarkPassengers();
-            inspect();
-            rest();
-
-            // Swaps current and destination airports.
-            flightConfiguration();
          */
     }
 
-    // Airplane accesses Airport Hangar.
     private void accessHangar() {
         // Print in console.
         System.out.println("Airplane " + this.getID() + " with occupancy " + this.getOccupancy() + " entered the " + getCurrentAirport().getAirportName() + " Hangar.");
         // Log event.
         log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " with occupancy " + this.getOccupancy() + " entered the " + getCurrentAirport().getAirportName() + " Hangar.");
 
-        // Enters the airport's hangar.
-        this.getCurrentAirport().getHangar().addAirplane(this);
+        if (isBorn) {
+            // If the airplane is born, it accesses the hangar and skips the sleep.
+            this.getCurrentAirport().getHangar().addAirplane(this);
+        } else {
+            // If the airplane is not born, there is a 50% chance it accesses the hangar and sleeps.
+            if (Math.random() < 0.5) {
+                this.getCurrentAirport().getHangar().addAirplane(this);
+                try {
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(15000, 30001));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            // After the sleep or skip, set isBorn to false.
+            isBorn = false;
+        }
     }
 
-    private synchronized void accessParkingArea() {
-        // Wait until this airplane is at the head of the hangar queue.
-        while (!this.getCurrentAirport().getHangar().isAtHead(this)) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                System.out.println("ERROR - Accessing Parking Area.");
-            }
-        }
-
+    private void accessParkingArea() {
         // Print in console.
         System.out.println("Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
         // Log event.
         log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
 
-        // Now the airplane is at the head of the queue, it can leave the Hangar and enter the Parking Area.
-        this.getCurrentAirport().getParkingArea().addAirplane(this.getCurrentAirport().getHangar().removeAirplane());
-        // Notify all waiting threads.
-        notifyAll();
+        this.getCurrentAirport().getParkingArea().addAirplane(this.getCurrentAirport().getHangar().removeAirplane(this));
+        System.out.println();
     }
 
-    // TODO: comment this code properly.
-    private void boardPassengers() {
+    private void processBoarding() {
+        Semaphore semaphore = this.getCurrentAirport().getSemaphoreBG();
+        ReentrantLock[] locks = this.getCurrentAirport().getLocksBG();
+        BlockingQueue queue = this.getCurrentAirport().getParkingArea().getAirplaneQueue();
+        Airplane checker = null;
 
-        // Wait until a boarding gate accepts this airplane.
-        synchronized (this) {
-            while (!isNotified) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    System.out.println("ERROR - Boarding passengers.");
+        boolean active = true;
+        try {
+            synchronized (queue) {
+                while (!queue.peek().equals(this)) {
+                    queue.wait();
+                }
+
+                semaphore.acquire();
+                System.out.println(this);
+                queue.remove();
+                queue.notifyAll();
+                active = false;
+            }
+        } catch (InterruptedException e) {
+        }
+
+        try {
+            for (int i = 0; i < locks.length; i++) {
+                // Try to acquire the lock for the current boarding gate.
+                if (locks[i].tryLock()) {
+                    try {
+                        // Set the airplane status.
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
+
+                        for (int j = 0; j < 3; j++) {
+                            // Wait if paused.
+                            pauseControl.checkPaused();
+
+                            this.addPassengers(this.getCurrentAirport().offloadPassengers(this.getCapacity() - this.getNumPassengers()));
+                            this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
+                            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
+
+                            if (this.getCapacity() == this.getNumPassengers()) {
+                                break;
+                            } else {
+                                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+                            }
+                        }
+
+                        embarkDisembark++;
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatusNull();
+                    } finally {
+                        // Release the lock for the current boarding gate.
+                        locks[i].unlock();
+                    }
+                    // Break the loop as the airplane as found a boarding gate.
+                    break;
                 }
             }
-            isNotified = false;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            // Release a permit back to the semaphore.
+            semaphore.release();
         }
 
-        bg.setAirplaneStatus(this);
-
-        for (int i = 0; i < 3; i++) {
-
-            // Wait if paused.
-            pauseControl.checkPaused();
-
-            this.addPassengers(this.getCurrentAirport().offloadPassengers(this.getCapacity() - this.getNumPassengers()));
-            bg.setAirplaneStatus(this);
-            try {
-                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
-            } catch (InterruptedException e) {
-                System.out.println("ERROR - Boarding passengers attempts boardPassengers()");
-            }
-            if (this.getCapacity() == this.getNumPassengers()) {
-                break;
-            } else {
-                try {
-                    Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
-                } catch (InterruptedException e) {
-                    System.out.println("ERROR - Waiting for passengers boardPassengers()");
-                }
-            }
-        }
-
-        embarkDisembark++;
-
-        // Notify the boarding gate that it has finished boarding passengers.
-        synchronized (this) {
-            notify();
-        }
     }
 
     private void accessTaxiArea() {
@@ -191,33 +209,43 @@ public class Airplane implements Runnable {
     }
 
     public void accessRunway() {
-        // Wait until a runway this airplane.
-        synchronized (this) {
-            while (!isNotified) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    System.out.println("ERROR - Boarding passengers.");
-                }
-            }
-            isNotified = false;
-        }
-
-        rw.setAirplaneStatus(this);
+        Semaphore semaphore = this.getCurrentAirport().getSemaphoreR();
+        ReentrantLock[] locks = this.getCurrentAirport().getLocksR();
 
         try {
-            System.out.println("Check up verifications.");
-            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
-            System.out.println("Taking off");
-            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+            // Acquire a permit from the semaphore.
+            semaphore.acquire();
+
+            for (int i = 0; i < locks.length; i++) {
+                // Try to acquire the lock for the current runway.
+                if (locks[i].tryLock()) {
+                    try {
+                        // Set the airplane status.
+                        this.getCurrentAirport().getRunway(i).setAirplane(this);
+
+                        try {
+                            System.out.println("Check up verifications.");
+                            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
+                            System.out.println("Taking off.");
+                            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+
+                        } catch (InterruptedException e) {
+                        }
+                        takeOffLand++;
+                        this.getCurrentAirport().getRunway(i).setAirplaneStatusNull();
+                    } finally {
+                        // Release the lock for the current runway.
+                        locks[i].unlock();
+                    }
+                    // Break from the loop as the airplane has taken off.
+                    break;
+                }
+            }
         } catch (InterruptedException e) {
+        } finally {
+            semaphore.release();
         }
 
-        takeOffLand++;
-        // Notify the boarding gate that it has finished boarding passengers.
-        synchronized (this) {
-            notify();
-        }
     }
 
     public void takeOff() {
@@ -246,7 +274,39 @@ public class Airplane implements Runnable {
     }
      */
     public void requestLanding() {
+        // Wait until a runway this airplane.
+        int a = 0;
+        a++;
+        synchronized (this) {
+            while (!isNotified) {
+                a++;
+                try {
 
+                    wait();
+                } catch (InterruptedException e) {
+                    System.out.println("ERROR - Boarding passengers.");
+                }
+            }
+
+            isNotified = false;
+
+            rw.setAirplaneStatus(this);
+
+            try {
+                System.out.println("TRYING TO LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAND");
+                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
+                System.out.println("TRYING TO LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAND");
+                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+            } catch (InterruptedException e) {
+            }
+
+            takeOffLand++;
+
+            // Notify the boarding gate that it has finished boarding passengers.
+            synchronized (this) {
+                notify();
+            }
+        }
     }
 
     private String getRandomLetters() {

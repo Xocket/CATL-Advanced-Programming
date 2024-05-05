@@ -62,4 +62,8 @@ public class ParkingArea {
         return airplaneQueue;
     }
 
+    // Returns true if the object that calls it is at the head of the list.
+    public boolean isAtHead(Airplane airplane) {
+        return airplaneQueue.peek().equals(airplane);
+    }
 }

@@ -1,56 +1,16 @@
 // Package declaration.
 package com.catl.code;
 
-public class BoardingGate implements Runnable {
+public class BoardingGate {
 
-    private ParkingArea parkingArea;
-    private Airplane airplane;
     private final int gateNumber;
+
+    private Airplane airplane;
     private String airplaneStatus;
 
-    public BoardingGate(ParkingArea parkingArea, int gateNumber) {
-        this.parkingArea = parkingArea;
+    public BoardingGate(int gateNumber) {
         this.gateNumber = gateNumber;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            // Check if the boarding gate is unoccupied.
-            if (airplane == null) {
-                // Take an airplane from the parking area.
-                airplane = parkingArea.removeAirplane();
-            }
-
-            // Process boarding.
-            airplane.setBg(this);
-            //setAirplaneStatus(airplane);
-
-            this.boardPassengers(airplane);
-
-            airplane = null;
-            setAirplaneStatus(airplane);
-        }
-    }
-
-    private void boardPassengers(Airplane airplane) {
-        // Board passengers onto the airplane.
-        // Notify the airplane that it has been accepted by a boarding gate.
-        synchronized (airplane) {
-            airplane.setIsNotified(true);
-            airplane.notify();
-            try {
-                // Wait until the airplane finishes boarding passengers.
-                airplane.wait();
-            } catch (InterruptedException e) {
-                System.out.println("ERROR - Boarding Gate waiting for airplane to finish boarding passengers.");
-            }
-        }
-
-        // Print in console.
-        System.out.println("Airplane " + airplane.getID() + " with occupancy " + airplane.getOccupancy() + " has boarded in Gate " + this.getGateNumber());
-        // Log event.
-        airplane.getLog().logEvent(airplane.getCurrentAirport().getAirportName(), "Airplane " + airplane.getID() + " with occupancy " + airplane.getOccupancy() + " has boarded in Gate " + this.getGateNumber());
+        this.airplane = null;
     }
 
     public int getGateNumber() {
@@ -77,6 +37,10 @@ public class BoardingGate implements Runnable {
 
     public String getAirplaneStatus() {
         return airplaneStatus;
+    }
+
+    public void setAirplaneStatusNull() {
+        airplaneStatus = "";
     }
 
 }

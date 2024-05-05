@@ -2,53 +2,78 @@
 package com.catl.code;
 
 // Importing classes.
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Hangar {
 
-    private ConcurrentLinkedQueue<Airplane> airplaneQueue = new ConcurrentLinkedQueue<>();
+    private ArrayList<Airplane> airplaneList = new ArrayList<>();
+    private ReentrantLock lock = new ReentrantLock();
 
     private AtomicInteger accumulativeNumberAirplanes = new AtomicInteger(0);
     private AtomicInteger maxSize = new AtomicInteger(0);
 
     // Add an airplane to the Hangar.
     public void addAirplane(Airplane airplane) {
-        airplaneQueue.add(airplane);
-        accumulativeNumberAirplanes.incrementAndGet();
-        maxSize.set(Math.max(maxSize.get(), airplaneQueue.size()));
+        lock.lock();
+        try {
+            airplaneList.add(airplane);
+            accumulativeNumberAirplanes.incrementAndGet();
+            maxSize.set(Math.max(maxSize.get(), airplaneList.size()));
+        } finally {
+            lock.unlock();
+        }
     }
 
-    // Remove and returns an airplane from the head of the queue.
-    public Airplane removeAirplane() {
-        return airplaneQueue.poll();
+    public Airplane removeAirplane(Airplane airplane) {
+        lock.lock();
+        try {
+            int index = airplaneList.indexOf(airplane);
+            if (index != -1) {
+                return airplaneList.remove(index);
+            } else {
+                return null;
+            }
+        } finally {
+            lock.unlock();
+        }
     }
 
-    // Get the number of Airplanes  added in total.
+    // Get the number of Airplanes added in total.
     public int getTotalAirplanes() {
         return accumulativeNumberAirplanes.get();
     }
 
-    // Get the maximum number of elements in the queue at once.
+    // Get the maximum number of elements in the list at once.
     public int getMaxSize() {
         return maxSize.get();
     }
 
-    // Returns true if the object that calls it is at the head of the queue.
+    // Returns true if the object that calls it is at the head of the list.
     public boolean isAtHead(Airplane airplane) {
-        return airplaneQueue.peek().equals(airplane);
+        lock.lock();
+        try {
+            return (!airplaneList.isEmpty() && airplaneList.get(0).equals(airplane));
+        } finally {
+            lock.unlock();
+        }
     }
 
     public String getStatus() {
         StringBuilder sb = new StringBuilder();
-        for (Airplane airplane : this.getAirplaneQueue()) {
-            sb.append(airplane.getID()).append(", ");
+        lock.lock();
+        try {
+            for (Airplane airplane : this.getAirplaneList()) {
+                sb.append(airplane.getID()).append(", ");
+            }
+        } finally {
+            lock.unlock();
         }
         return sb.toString();
     }
 
-    public ConcurrentLinkedQueue<Airplane> getAirplaneQueue() {
-        return airplaneQueue;
+    public ArrayList<Airplane> getAirplaneList() {
+        return airplaneList;
     }
-
 }
