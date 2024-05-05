@@ -70,6 +70,12 @@ public class Airplane implements Runnable {
         pauseControl.checkPaused();
         accessRunway();
         pauseControl.checkPaused();
+        takeOff();
+        pauseControl.checkPaused();
+        fly();
+        pauseControl.checkPaused();
+        requestLanding();
+        pauseControl.checkPaused();
 
         try {
             Thread.sleep(100000000);
@@ -78,10 +84,6 @@ public class Airplane implements Runnable {
 
 
         /*
-            
-            takeOff();
-            fly();
-            land();
             debarkPassengers();
             inspect();
             rest();
@@ -204,7 +206,10 @@ public class Airplane implements Runnable {
         rw.setAirplaneStatus(this);
 
         try {
-            Thread.sleep(3000);
+            System.out.println("Check up verifications.");
+            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
+            System.out.println("Taking off");
+            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
         } catch (InterruptedException e) {
         }
 
@@ -213,6 +218,35 @@ public class Airplane implements Runnable {
         synchronized (this) {
             notify();
         }
+    }
+
+    public void takeOff() {
+        System.out.println(this.getID() + " taking off towards " + this.getCurrentAirport().getAirportName() + " airport.");
+
+        try {
+            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+        } catch (InterruptedException e) {
+        }
+        this.getCurrentAirport().getAirway().addAirplane(this);
+    }
+
+    public void fly() {
+
+        int flightDuration = ThreadLocalRandom.current().nextInt(15000, 30001);
+        System.out.println(this.getID() + " flying for " + String.format("%.1f", (double) flightDuration / 1000) + " s.");
+        try {
+            Thread.sleep(flightDuration);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    /*
+    public void requestLanding() {
+        this.getCurrentAirport().getAirway().makeAirplaneReady(this);
+    }
+     */
+    public void requestLanding() {
+
     }
 
     private String getRandomLetters() {

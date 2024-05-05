@@ -633,7 +633,6 @@ public class UserInterface extends javax.swing.JFrame {
                     Timer timer = new Timer(20, e -> {
                         if (!isPaused()) {
                             updateInterface();
-                            System.out.println("BRUH");
                         }
                     });
 
@@ -758,6 +757,10 @@ public class UserInterface extends javax.swing.JFrame {
                     updaterRunway4Barcelona.setText(status);
             }
         }
+
+        // Update airways.
+        updaterAirwayMadrid.setText(madridAirport.getAirway().getStatus());
+        updaterAirwayBarcelona.setText(barcelonaAirport.getAirway().getStatus());
 
     }
 

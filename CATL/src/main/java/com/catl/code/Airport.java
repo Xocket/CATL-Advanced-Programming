@@ -16,6 +16,7 @@ public class Airport {
     private MaintenanceHall maintenanceHall = new MaintenanceHall(20);
     private ParkingArea parkingArea = new ParkingArea();
     private TaxiArea taxiArea = new TaxiArea();
+    private Airway airway = new Airway();
 
     private String airportName;
 
@@ -112,4 +113,7 @@ public class Airport {
         return taxiArea;
     }
 
+    public Airway getAirway() {
+        return airway;
+    }
 }

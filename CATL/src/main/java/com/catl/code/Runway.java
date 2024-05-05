@@ -29,14 +29,13 @@ public class Runway implements Runnable {
             airplane.setRunway(this);
             //setAirplaneStatus(airplane);
 
-            this.testerino(airplane);
+            this.takeOff(airplane);
             airplane = null;
             setAirplaneStatus(airplane);
         }
     }
 
-    private void testerino(Airplane airplane) {
-        // Board passengers onto the airplane.
+    private void takeOff(Airplane airplane) {
         // Notify the airplane that it has been accepted by a boarding gate.
         synchronized (airplane) {
             airplane.setIsNotified(true);
