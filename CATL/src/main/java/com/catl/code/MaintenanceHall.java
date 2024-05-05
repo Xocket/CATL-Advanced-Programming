@@ -17,10 +17,11 @@ public class MaintenanceHall {
     }
 
     // Method to add an airplane to the maintenance hall.
-    public void addAirplane(Airplane airplane) {
+    public synchronized void addAirplane(Airplane airplane) {
         try {
             airplaneQueue.put(airplane);
             accumulativeNumberAirplanes.incrementAndGet();
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println("ERROR - Adding airplane to Maintenance Hall.");
         }
@@ -41,4 +42,16 @@ public class MaintenanceHall {
         return accumulativeNumberAirplanes.get();
     }
 
+    public String getStatus() {
+        StringBuilder sb = new StringBuilder();
+        for (Airplane airplane : this.airplaneQueue) {
+            sb.append(airplane.getID()).append(", ");
+        }
+
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 2);
+        }
+
+        return sb.toString();
+    }
 }

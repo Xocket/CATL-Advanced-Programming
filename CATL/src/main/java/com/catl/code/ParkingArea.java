@@ -2,11 +2,16 @@
 package com.catl.code;
 
 // Importing classes.
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ParkingArea {
+
+    private ArrayList<Airplane> airplaneList = new ArrayList<>();
+    private ReentrantLock lock = new ReentrantLock();
 
     private BlockingQueue<Airplane> airplaneQueue = new LinkedBlockingQueue<>();
 
@@ -15,14 +20,47 @@ public class ParkingArea {
 
     // Add an airplane to the Parking Area.
     public void addAirplane(Airplane airplane) {
+
         try {
             airplaneQueue.put(airplane);
+            lock.lock();
+            try {
+                airplaneList.add(airplane);
+            } finally {
+                lock.unlock();
+            }
             accumulativeNumberAirplanes.incrementAndGet();
             maxSize.set(Math.max(maxSize.get(), airplaneQueue.size()));
         } catch (InterruptedException e) {
             System.out.println("ERROR - Adding airplane to Parking Area.");
         }
+    }
 
+    public void addAirplaneForInspection(Airplane airplane) {
+        if (airplane == null) {
+            System.out.println("ERROR - Attempted to add a null airplane to Parking Area.");
+            return;
+        }
+        lock.lock();
+        try {
+            airplaneList.add(airplane);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public Airplane removeAirplane(Airplane airplane) {
+        lock.lock();
+        try {
+            int index = airplaneList.indexOf(airplane);
+            if (index != -1) {
+                return airplaneList.remove(index);
+            } else {
+                return null;
+            }
+        } finally {
+            lock.unlock();
+        }
     }
 
     // Remove and returns an airplane from the head of the queue.
@@ -47,8 +85,13 @@ public class ParkingArea {
 
     public String getStatus() {
         StringBuilder sb = new StringBuilder();
-        for (Airplane airplane : this.getAirplaneQueue()) {
-            sb.append(airplane.getID()).append(", ");
+        lock.lock();
+        try {
+            for (Airplane airplane : this.getAirplaneList()) {
+                sb.append(airplane.getID()).append(", ");
+            }
+        } finally {
+            lock.unlock();
         }
 
         if (sb.length() > 0) {
@@ -65,5 +108,9 @@ public class ParkingArea {
     // Returns true if the object that calls it is at the head of the list.
     public boolean isAtHead(Airplane airplane) {
         return airplaneQueue.peek().equals(airplane);
+    }
+
+    public ArrayList<Airplane> getAirplaneList() {
+        return airplaneList;
     }
 }

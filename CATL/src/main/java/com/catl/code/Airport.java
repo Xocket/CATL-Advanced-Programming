@@ -157,4 +157,8 @@ public class Airport {
     public ReentrantLock[] getLocksR() {
         return locksR;
     }
+
+    public MaintenanceHall getMaintenanceHall() {
+        return maintenanceHall;
+    }
 }

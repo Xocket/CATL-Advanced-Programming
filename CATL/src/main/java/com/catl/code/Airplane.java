@@ -2,7 +2,6 @@
 package com.catl.code;
 
 // Importing classes.
-import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,6 +22,8 @@ public class Airplane implements Runnable {
 
     private int embarkDisembark;
     private int takeOffLand;
+    private boolean landing;
+    private int timesFlown;
 
     private boolean isBorn;
 
@@ -61,7 +62,9 @@ public class Airplane implements Runnable {
         this.pauseControl = pauseControl;
         this.embarkDisembark = 0;
         this.takeOffLand = 0;
+        this.landing = false;
         this.isBorn = true;
+        this.timesFlown = 0;
     }
 
     @Override
@@ -73,13 +76,6 @@ public class Airplane implements Runnable {
         pauseControl.checkPaused();
         processBoarding();
         pauseControl.checkPaused();
-
-        try {
-            Thread.sleep(100000);
-        } catch (InterruptedException e) {
-        }
-
-        /*
         accessTaxiArea();
         pauseControl.checkPaused();
         accessRunway();
@@ -88,9 +84,21 @@ public class Airplane implements Runnable {
         pauseControl.checkPaused();
         fly();
         pauseControl.checkPaused();
-        requestLanding();
+        land();
         pauseControl.checkPaused();
-         */
+        accessTaxiArea();
+        pauseControl.checkPaused();
+        processDisembark();
+        pauseControl.checkPaused();
+        accessParkingArea();
+        pauseControl.checkPaused();
+        //getInspection();
+        //pauseControl.checkPaused();
+
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+        }
     }
 
     private void accessHangar() {
@@ -118,22 +126,42 @@ public class Airplane implements Runnable {
     }
 
     private void accessParkingArea() {
-        // Print in console.
-        System.out.println("Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
-        // Log event.
-        log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
 
-        this.getCurrentAirport().getParkingArea().addAirplane(this.getCurrentAirport().getHangar().removeAirplane(this));
-        System.out.println();
+        if (!landing) {
+            this.getCurrentAirport().getParkingArea().addAirplane(this.getCurrentAirport().getHangar().removeAirplane(this));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+
+            // Print in console.
+            System.out.println("Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
+            // Log event.
+            log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
+
+        } else {
+            this.getCurrentAirport().getParkingArea().addAirplaneForInspection(this);
+            // Print in console.
+            System.out.println("Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area and is performing checks.");
+            // Log event.
+            log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area and is performing checks.");
+
+            try {
+                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+            } catch (InterruptedException e) {
+
+            }
+
+            getInspection();
+        }
+
     }
 
     private void processBoarding() {
         Semaphore semaphore = this.getCurrentAirport().getSemaphoreBG();
         ReentrantLock[] locks = this.getCurrentAirport().getLocksBG();
         BlockingQueue queue = this.getCurrentAirport().getParkingArea().getAirplaneQueue();
-        Airplane checker = null;
 
-        boolean active = true;
         try {
             synchronized (queue) {
                 while (!queue.peek().equals(this)) {
@@ -143,8 +171,8 @@ public class Airplane implements Runnable {
                 semaphore.acquire();
                 System.out.println(this);
                 queue.remove();
+                this.getCurrentAirport().getParkingArea().getAirplaneList().remove(this);
                 queue.notifyAll();
-                active = false;
             }
         } catch (InterruptedException e) {
         }
@@ -172,7 +200,6 @@ public class Airplane implements Runnable {
                             }
                         }
 
-                        embarkDisembark++;
                         this.getCurrentAirport().getBoardingGates(i).setAirplaneStatusNull();
                     } finally {
                         // Release the lock for the current boarding gate.
@@ -195,17 +222,20 @@ public class Airplane implements Runnable {
         currentAirport.getTaxiArea().addAirplane(this);
         System.out.println("Airplane " + getID() + " has entered the " + this.getCurrentAirport().getAirportName() + " airport Taxi Area.");
 
-        // Before requesting runway, pilots make checks for 1-5 seconds.
-        int durationChecks = ThreadLocalRandom.current().nextInt(1000, 5001);
-        System.out.println("Pilots of flight " + this.getOccupancyID() + " performing pre-flight checks for " + String.format("%.1f", (double) durationChecks / 1000) + " s.");
+        if (!landing) {
+            // Before requesting runway, pilots make checks for 1-5 seconds.
+            int durationChecks = ThreadLocalRandom.current().nextInt(1000, 5001);
+            System.out.println("Pilots of flight " + this.getOccupancyID() + " performing pre-flight checks for " + String.format("%.1f", (double) durationChecks / 1000) + " s.");
 
-        try {
-            Thread.sleep(durationChecks);
-        } catch (InterruptedException e) {
-            System.out.println("ERROR - Performing pre-flight checks.");
+            try {
+                Thread.sleep(durationChecks);
+            } catch (InterruptedException e) {
+                System.out.println("ERROR - Performing pre-flight checks.");
+            }
+        } else {
+            this.processDisembark();
         }
 
-        currentAirport.getTaxiArea().makeAirplaneReady(this);
     }
 
     public void accessRunway() {
@@ -215,13 +245,14 @@ public class Airplane implements Runnable {
         try {
             // Acquire a permit from the semaphore.
             semaphore.acquire();
+            currentAirport.getTaxiArea().getAirplaneList().remove(this);
 
             for (int i = 0; i < locks.length; i++) {
                 // Try to acquire the lock for the current runway.
                 if (locks[i].tryLock()) {
                     try {
                         // Set the airplane status.
-                        this.getCurrentAirport().getRunway(i).setAirplane(this);
+                        this.getCurrentAirport().getRunway(i).setAirplaneStatus(this);
 
                         try {
                             System.out.println("Check up verifications.");
@@ -231,7 +262,6 @@ public class Airplane implements Runnable {
 
                         } catch (InterruptedException e) {
                         }
-                        takeOffLand++;
                         this.getCurrentAirport().getRunway(i).setAirplaneStatusNull();
                     } finally {
                         // Release the lock for the current runway.
@@ -250,12 +280,11 @@ public class Airplane implements Runnable {
 
     public void takeOff() {
         System.out.println(this.getID() + " taking off towards " + this.getCurrentAirport().getAirportName() + " airport.");
-
+        this.getCurrentAirport().getAirway().addAirplane(this);
         try {
             Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
         } catch (InterruptedException e) {
         }
-        this.getCurrentAirport().getAirway().addAirplane(this);
     }
 
     public void fly() {
@@ -266,46 +295,124 @@ public class Airplane implements Runnable {
             Thread.sleep(flightDuration);
         } catch (InterruptedException e) {
         }
+
+        this.swapAirports();
+        embarkDisembark++;
+        takeOffLand++;
+        landing = true;
+        timesFlown++;
     }
 
-    /*
-    public void requestLanding() {
-        this.getCurrentAirport().getAirway().makeAirplaneReady(this);
-    }
-     */
-    public void requestLanding() {
-        // Wait until a runway this airplane.
-        int a = 0;
-        a++;
-        synchronized (this) {
-            while (!isNotified) {
-                a++;
+    public void land() {
+        Semaphore semaphore = this.getCurrentAirport().getSemaphoreR();
+        ReentrantLock[] locks = this.getCurrentAirport().getLocksR();
+
+        while (true) {
+            if (semaphore.tryAcquire()) {
+                break;
+            } else {
+                // No permits available, sleep for 1-5 seconds
                 try {
-
-                    wait();
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
                 } catch (InterruptedException e) {
-                    System.out.println("ERROR - Boarding passengers.");
+                    e.printStackTrace();
                 }
             }
+        }
 
-            isNotified = false;
+        this.getDestinationAirport().getAirway().removeAirplane(this);
 
-            rw.setAirplaneStatus(this);
+        for (int i = 0; i < locks.length; i++) {
+            // Try to acquire the lock for the current runway.
+            if (locks[i].tryLock()) {
+                try {
+                    this.getCurrentAirport().getRunway(i).setAirplaneStatus(this);
 
-            try {
-                System.out.println("TRYING TO LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAND");
-                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
-                System.out.println("TRYING TO LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAND");
-                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
-            } catch (InterruptedException e) {
+                    try {
+                        System.out.println("LANDING");
+                        Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+                    } catch (InterruptedException e) {
+                    }
+
+                    takeOffLand++;
+                    this.getCurrentAirport().getRunway(i).setAirplaneStatusNull();
+                } finally {
+                    locks[i].unlock();
+                }
+                semaphore.release();
+                break;
+            }
+        }
+    }
+
+    private void processDisembark() {
+        Semaphore semaphore = this.getCurrentAirport().getSemaphoreBG();
+        ReentrantLock[] locks = this.getCurrentAirport().getLocksBG();
+
+        try {
+            // Acquire a semaphore permit.
+            semaphore.acquire();
+
+            for (int i = 0; i < locks.length; i++) {
+                // Try to acquire the lock for the current boarding gate.
+                if (locks[i].tryLock()) {
+                    try {
+                        // Set the airplane status.
+                        this.currentAirport.getTaxiArea().removeAirplane(this);
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
+
+                        // Sleep for 3-5 seconds to simulate the airplane getting to the boarding gate.
+                        Thread.sleep(ThreadLocalRandom.current().nextInt(3000, 5001));
+
+                        // Disembark all passengers.
+                        this.getCurrentAirport().addPassengers(this.getNumPassengers());
+                        this.numPassengers = 0;
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
+
+                        // Sleep for 1-5 seconds to simulate the transfer of all passengers to the airport.
+                        Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatusNull();
+                    } finally {
+                        // Release the lock for the current boarding gate.
+                        locks[i].unlock();
+                    }
+                    // Break the loop as the airplane has found a boarding gate.
+                    break;
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            // Release a permit back to the semaphore.
+            semaphore.release();
+        }
+    }
+
+    public void getInspection() {
+        boolean deepInspection = false;
+        if (timesFlown % 15 == 0) {
+            deepInspection = true;
+        }
+
+        try {
+            // Add the airplane to the maintenance hall queue
+            this.getCurrentAirport().getMaintenanceHall().addAirplane(this);
+
+            // Only remove the airplane from the parking area if it gets past the .put() method
+            this.getCurrentAirport().getParkingArea().removeAirplane(this);
+
+            // Perform the inspection
+            if (deepInspection) {
+                // Deep inspection takes a random time between 5 and 10 seconds
+                Thread.sleep((int) (Math.random() * ((10000 - 5000) + 1)) + 5000);
+            } else {
+                // Quick check takes a random time between 1 and 5 seconds
+                Thread.sleep((int) (Math.random() * ((5000 - 1000) + 1)) + 1000);
             }
 
-            takeOffLand++;
-
-            // Notify the boarding gate that it has finished boarding passengers.
-            synchronized (this) {
-                notify();
-            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -371,6 +478,20 @@ public class Airplane implements Runnable {
 
     int getTakeOffLand() {
         return takeOffLand;
+    }
+
+    public void swapAirports() {
+        Airport tmpAirport = this.getCurrentAirport();
+        this.setCurrentAirport(this.getDestinationAirport());
+        this.setDestinationAirport(tmpAirport);
+    }
+
+    public void setCurrentAirport(Airport currentAirport) {
+        this.currentAirport = currentAirport;
+    }
+
+    public void setDestinationAirport(Airport destinationAirport) {
+        this.destinationAirport = destinationAirport;
     }
 
 }

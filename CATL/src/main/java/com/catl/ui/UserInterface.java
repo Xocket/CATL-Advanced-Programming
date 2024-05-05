@@ -711,11 +711,11 @@ public class UserInterface extends javax.swing.JFrame {
         // Update the hangars.
         updaterHangarMadrid.setText(madridAirport.getHangar().getStatus());
         updaterHangarBarcleona.setText(barcelonaAirport.getHangar().getStatus());
-        /*
+
         // Update the maintenance halls.
         updaterMaintenanceMadrid.setText(madridAirport.getMaintenanceHall().getStatus());
         updaterMaintenanceBarcelona.setText(barcelonaAirport.getMaintenanceHall().getStatus());
-         */
+
         // Update the parking areas.
         updaterParkingAreaMadrid.setText(madridAirport.getParkingArea().getStatus());
         updaterParkingAreaBarcelona.setText(barcelonaAirport.getParkingArea().getStatus());
