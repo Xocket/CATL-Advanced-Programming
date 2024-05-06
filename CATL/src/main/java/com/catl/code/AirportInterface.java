@@ -17,4 +17,8 @@ public interface AirportInterface extends Remote {
     int getNumAirplanesInTaxi() throws RemoteException;
 
     String airwayStatus() throws RemoteException;
+
+    void closeRunway(int runwayNumber) throws RemoteException;
+
+    void openRunway(int runwayNumber) throws RemoteException;
 }

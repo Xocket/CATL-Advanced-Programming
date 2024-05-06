@@ -4,8 +4,12 @@ package com.catl.code;
 // Importing classes.
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 // Airport class which contains all the zones and methods for airplanes to navigate them.
@@ -35,11 +39,10 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
 
         // Initialize the boardingGates and runways arrays.
         this.boardingGates = new BoardingGate[6];
-        this.runways = new Runway[4];
 
         // Initialize each semaphore.
         this.semaphoreBG = new Semaphore(6, true);
-        this.semaphoreR = new Semaphore(4, true);
+        this.semaphoreR = new Semaphore(1);
 
         // Initialize the locksBG and the locksR arrays.
         this.locksBG = new ReentrantLock[6];
@@ -51,12 +54,24 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
             this.locksBG[i] = new ReentrantLock();
         }
 
-        // Initialize each Runway object and its associated lock.
-        for (int i = 0; i < 4; i++) {
-            this.runways[i] = new Runway(i);
-            this.locksR[i] = new ReentrantLock();
+        runwayStatus = new AtomicBoolean[4];
+        openRunways = new LinkedBlockingQueue<>();
+
+        // Initialize the runways and their statuses
+        for (int i = 0; i < runwayStatus.length; i++) {
+            runwayStatus[i] = new AtomicBoolean(true); // All runways start as open
+            openRunways.add(new Runway(i)); // Add new Runway objects to the queue
+        }
+
+        runways = new Runway[4]; // Initialize the runways array
+        for (int i = 0; i < runwayStatus.length; i++) {
+            runways[i] = new Runway(i); // Populate the array
+            openRunways.add(runways[i]); // Add runways to the queue
         }
     }
+
+    private final AtomicBoolean[] runwayStatus; // Array to keep track of runway statuses
+    private final BlockingQueue<Runway> openRunways; // Queue to manage available runways
 
     // TODO: finish commenting these.
     private Hangar hangar = new Hangar();
@@ -116,8 +131,12 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
         return boardingGates[i];
     }
 
+    // Method to get a runway by index
     public Runway getRunway(int i) {
-        return runways[i];
+        if (i >= 0 && i < runways.length) {
+            return runways[i];
+        }
+        return null; // Return null or throw an exception if the index is out of bounds
     }
 
     public String getStatusBusToDowntown() {
@@ -193,4 +212,30 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
     public String airwayStatus() throws RemoteException {
         return this.getAirway().getStatus();
     }
+
+    @Override
+    public void closeRunway(int runwayNumber) throws RemoteException {
+        runwayStatus[runwayNumber].set(false); // Set the status to closed
+        openRunways.removeIf(runway -> runway.getRunwayNumber() == runwayNumber); // Remove from queue
+    }
+
+    @Override
+    public void openRunway(int runwayNumber) throws RemoteException {
+        runwayStatus[runwayNumber].set(true); // Set the status to open
+        openRunways.add(new Runway(runwayNumber)); // Add back to the queue
+
+    }
+
+    public AtomicBoolean[] getRunwayStatus() {
+        return runwayStatus;
+    }
+
+    public BlockingQueue<Runway> getOpenRunways() {
+        return openRunways;
+    }
+
+    public AtomicBoolean[] getRunwayStatusArray() {
+        return runwayStatus;
+    }
+
 }

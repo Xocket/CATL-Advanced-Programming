@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 // Airplane class implemented as a thread. Models the airplane lifecycle behavior.
@@ -217,9 +218,7 @@ public class Airplane implements Runnable {
     }
 
     private void accessTaxiArea() {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         currentAirport.getTaxiArea().addAirplane(this);
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         System.out.println("Airplane " + getID() + " has entered the " + this.getCurrentAirport().getAirportName() + " airport Taxi Area.");
 
         if (!landing) {
@@ -239,44 +238,35 @@ public class Airplane implements Runnable {
 
     }
 
+    // Method to access a runway
     public void accessRunway() {
-        Semaphore semaphore = this.getCurrentAirport().getSemaphoreR();
-        ReentrantLock[] locks = this.getCurrentAirport().getLocksR();
-
+        System.out.println("ACCESSING RUNWAY TAKE OFF VALUE:" + takeOffLand);
+        BlockingQueue<Runway> openRunways = this.getCurrentAirport().getOpenRunways(); // Get the queue of open runways
+        AtomicBoolean[] runwayStatus = this.getCurrentAirport().getRunwayStatusArray(); // Get the array of runway statuses
+        Runway runway = null;
         try {
-            // Acquire a permit from the semaphore.
-            semaphore.acquire();
-            currentAirport.getTaxiArea().getAirplaneList().remove(this);
+            runway = openRunways.take(); // Take a runway from the queue
+            this.getCurrentAirport().getRunway(runway.getRunwayNumber()).setAirplaneStatus(this);
+            this.getCurrentAirport().getTaxiArea().removeAirplane(this);
 
-            for (int i = 0; i < locks.length; i++) {
-                // Try to acquire the lock for the current runway.
-                if (locks[i].tryLock()) {
-                    try {
-                        // Set the airplane status.
-                        this.getCurrentAirport().getRunway(i).setAirplaneStatus(this);
+            // Set the airplane status (assuming this method exists in Runway class)
+            // Simulate pre-flight checks and takeoff
+            System.out.println("Airplane " + this + ": Check up verifications.");
+            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
+            System.out.println("Airplane " + this + ": Taking off.");
+            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
 
-                        try {
-                            System.out.println("Check up verifications.");
-                            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
-                            System.out.println("Taking off.");
-                            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+            // Clear the airplane status (assuming this method exists in Runway class)
+            this.getCurrentAirport().getRunway(runway.getRunwayNumber()).setAirplaneStatusNull();
 
-                        } catch (InterruptedException e) {
-                        }
-                        this.getCurrentAirport().getRunway(i).setAirplaneStatusNull();
-                    } finally {
-                        // Release the lock for the current runway.
-                        locks[i].unlock();
-                    }
-                    // Break from the loop as the airplane has taken off.
-                    break;
-                }
-            }
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Properly handle the interrupted exception
         } finally {
-            semaphore.release();
+            // Add the runway back to the queue if it's still open
+            if (runwayStatus[runway.getRunwayNumber()].get()) {
+                openRunways.add(runway);
+            }
         }
-
     }
 
     public void takeOff() {
@@ -304,6 +294,39 @@ public class Airplane implements Runnable {
         timesFlown++;
     }
 
+    public void land() {
+        BlockingQueue<Runway> openRunways = this.getCurrentAirport().getOpenRunways(); // Get the queue of open runways
+        AtomicBoolean[] runwayStatus = this.getCurrentAirport().getRunwayStatusArray(); // Get the array of runway statuses
+        Runway runway = null;
+
+        try {
+            while (runway == null) {
+                runway = openRunways.poll();
+                if (runway == null) {
+                    System.out.println("Waiting for an open runway...");
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+                } else {
+                    this.getDestinationAirport().getAirway().removeAirplane(this);
+                    this.getCurrentAirport().getRunway(runway.getRunwayNumber()).setAirplaneStatus(this);
+
+                    System.out.println("LANDING");
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+
+                    this.getCurrentAirport().getRunway(runway.getRunwayNumber()).setAirplaneStatusNull();
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("The landing process was interrupted");
+        } finally {
+            // Add the runway back to the queue if it's still open
+            if (runway != null && runwayStatus[runway.getRunwayNumber()].get()) {
+                openRunways.add(runway);
+            }
+        }
+    }
+
+    /*
     public void land() {
         Semaphore semaphore = this.getCurrentAirport().getSemaphoreR();
         ReentrantLock[] locks = this.getCurrentAirport().getLocksR();
@@ -345,7 +368,7 @@ public class Airplane implements Runnable {
             }
         }
     }
-
+     */
     private void processDisembark() {
         Semaphore semaphore = this.getCurrentAirport().getSemaphoreBG();
         ReentrantLock[] locks = this.getCurrentAirport().getLocksBG();

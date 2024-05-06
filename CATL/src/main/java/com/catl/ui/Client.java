@@ -19,6 +19,17 @@ public class Client extends javax.swing.JFrame {
         } catch (Exception e) {
             System.err.println("Failed to look up RMI names.");
         }
+
+        openMadrid1.setEnabled(false);
+        openMadrid2.setEnabled(false);
+        openMadrid3.setEnabled(false);
+        openMadrid4.setEnabled(false);
+
+        openBarcelona1.setEnabled(false);
+        openBarcelona2.setEnabled(false);
+        openBarcelona3.setEnabled(false);
+        openBarcelona4.setEnabled(false);
+
     }
 
     /**
@@ -62,26 +73,26 @@ public class Client extends javax.swing.JFrame {
         labelTaxiMadrid5 = new javax.swing.JLabel();
         labelTaxiMadrid6 = new javax.swing.JLabel();
         labelTaxiMadrid7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        closeMadrid1 = new javax.swing.JButton();
+        openMadrid1 = new javax.swing.JButton();
+        closeMadrid2 = new javax.swing.JButton();
+        openMadrid2 = new javax.swing.JButton();
+        closeMadrid3 = new javax.swing.JButton();
+        openMadrid3 = new javax.swing.JButton();
+        closeMadrid4 = new javax.swing.JButton();
+        openMadrid4 = new javax.swing.JButton();
         labelTaxiMadrid8 = new javax.swing.JLabel();
         labelTaxiMadrid9 = new javax.swing.JLabel();
         labelTaxiMadrid10 = new javax.swing.JLabel();
         labelTaxiMadrid11 = new javax.swing.JLabel();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
+        closeBarcelona1 = new javax.swing.JButton();
+        openBarcelona1 = new javax.swing.JButton();
+        closeBarcelona2 = new javax.swing.JButton();
+        openBarcelona2 = new javax.swing.JButton();
+        closeBarcelona3 = new javax.swing.JButton();
+        openBarcelona3 = new javax.swing.JButton();
+        closeBarcelona4 = new javax.swing.JButton();
+        openBarcelona4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -300,29 +311,69 @@ public class Client extends javax.swing.JFrame {
         labelTaxiMadrid7.setFocusable(false);
         jPanel1.add(labelTaxiMadrid7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, -1, 30));
 
-        jButton1.setText("Close");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 360, 70, 30));
+        closeMadrid1.setText("Close");
+        closeMadrid1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeMadrid1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(closeMadrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 360, 70, 30));
 
-        jButton2.setText("Open");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 360, 70, 30));
+        openMadrid1.setText("Open");
+        openMadrid1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openMadrid1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(openMadrid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 360, 70, 30));
 
-        jButton3.setText("Close");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 400, 70, 30));
+        closeMadrid2.setText("Close");
+        closeMadrid2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeMadrid2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(closeMadrid2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 400, 70, 30));
 
-        jButton4.setText("Open");
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 400, 70, 30));
+        openMadrid2.setText("Open");
+        openMadrid2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openMadrid2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(openMadrid2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 400, 70, 30));
 
-        jButton5.setText("Close");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, 70, 30));
+        closeMadrid3.setText("Close");
+        closeMadrid3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeMadrid3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(closeMadrid3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, 70, 30));
 
-        jButton6.setText("Open");
-        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 360, 70, 30));
+        openMadrid3.setText("Open");
+        openMadrid3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openMadrid3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(openMadrid3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 360, 70, 30));
 
-        jButton7.setText("Close");
-        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 400, 70, 30));
+        closeMadrid4.setText("Close");
+        closeMadrid4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeMadrid4MouseClicked(evt);
+            }
+        });
+        jPanel1.add(closeMadrid4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 400, 70, 30));
 
-        jButton8.setText("Open");
-        jPanel1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 70, 30));
+        openMadrid4.setText("Open");
+        openMadrid4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openMadrid4MouseClicked(evt);
+            }
+        });
+        jPanel1.add(openMadrid4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 70, 30));
 
         labelTaxiMadrid8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         labelTaxiMadrid8.setForeground(new java.awt.Color(255, 255, 255));
@@ -352,40 +403,228 @@ public class Client extends javax.swing.JFrame {
         labelTaxiMadrid11.setFocusable(false);
         jPanel1.add(labelTaxiMadrid11, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 400, -1, 30));
 
-        jButton9.setText("Close");
-        jPanel1.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 360, 70, 30));
+        closeBarcelona1.setText("Close");
+        closeBarcelona1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeBarcelona1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(closeBarcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 360, 70, 30));
 
-        jButton10.setText("Open");
-        jPanel1.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 360, 70, 30));
+        openBarcelona1.setText("Open");
+        openBarcelona1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openBarcelona1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(openBarcelona1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 360, 70, 30));
 
-        jButton11.setText("Close");
-        jPanel1.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 400, 70, 30));
+        closeBarcelona2.setText("Close");
+        closeBarcelona2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeBarcelona2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(closeBarcelona2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 400, 70, 30));
 
-        jButton12.setText("Open");
-        jPanel1.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 400, 70, 30));
+        openBarcelona2.setText("Open");
+        openBarcelona2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openBarcelona2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(openBarcelona2, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 400, 70, 30));
 
-        jButton13.setText("Close");
-        jPanel1.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 360, 70, 30));
+        closeBarcelona3.setText("Close");
+        closeBarcelona3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeBarcelona3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(closeBarcelona3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 360, 70, 30));
 
-        jButton14.setText("Open");
-        jPanel1.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 360, 70, 30));
+        openBarcelona3.setText("Open");
+        openBarcelona3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openBarcelona3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(openBarcelona3, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 360, 70, 30));
 
-        jButton15.setText("Close");
-        jPanel1.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 400, 70, 30));
+        closeBarcelona4.setText("Close");
+        closeBarcelona4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeBarcelona4MouseClicked(evt);
+            }
+        });
+        jPanel1.add(closeBarcelona4, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 400, 70, 30));
 
-        jButton16.setText("Open");
-        jPanel1.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 400, 70, 30));
+        openBarcelona4.setText("Open");
+        openBarcelona4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openBarcelona4MouseClicked(evt);
+            }
+        });
+        jPanel1.add(openBarcelona4, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 400, 70, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void closeMadrid1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMadrid1MouseClicked
+        try {
+            madridAirport.closeRunway(0);
+            closeMadrid1.setEnabled(false);
+            openMadrid1.setEnabled(true);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_closeMadrid1MouseClicked
+
+    private void openMadrid1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openMadrid1MouseClicked
+        try {
+            madridAirport.openRunway(0);
+            closeMadrid1.setEnabled(true);
+            openMadrid1.setEnabled(false);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_openMadrid1MouseClicked
+
+    private void closeMadrid2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMadrid2MouseClicked
+        try {
+            madridAirport.closeRunway(1);
+            closeMadrid2.setEnabled(false);
+            openMadrid2.setEnabled(true);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_closeMadrid2MouseClicked
+
+    private void openMadrid2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openMadrid2MouseClicked
+        try {
+            madridAirport.openRunway(1);
+            closeMadrid2.setEnabled(true);
+            openMadrid2.setEnabled(false);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_openMadrid2MouseClicked
+
+    private void closeMadrid3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMadrid3MouseClicked
+        try {
+            madridAirport.closeRunway(2);
+            closeMadrid3.setEnabled(false);
+            openMadrid3.setEnabled(true);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_closeMadrid3MouseClicked
+
+    private void openMadrid3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openMadrid3MouseClicked
+        try {
+            madridAirport.openRunway(2);
+            closeMadrid3.setEnabled(true);
+            openMadrid3.setEnabled(false);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_openMadrid3MouseClicked
+
+    private void closeMadrid4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMadrid4MouseClicked
+        try {
+            madridAirport.closeRunway(3);
+            closeMadrid4.setEnabled(false);
+            openMadrid4.setEnabled(true);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_closeMadrid4MouseClicked
+
+    private void openMadrid4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openMadrid4MouseClicked
+        try {
+            madridAirport.openRunway(3);
+            closeMadrid4.setEnabled(true);
+            openMadrid4.setEnabled(false);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_openMadrid4MouseClicked
+
+    private void closeBarcelona1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeBarcelona1MouseClicked
+        try {
+            barcelonaAirport.closeRunway(0);
+            closeBarcelona1.setEnabled(false);
+            openBarcelona1.setEnabled(true);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_closeBarcelona1MouseClicked
+
+    private void openBarcelona1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBarcelona1MouseClicked
+        try {
+            barcelonaAirport.openRunway(0);
+            closeBarcelona1.setEnabled(true);
+            openBarcelona1.setEnabled(false);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_openBarcelona1MouseClicked
+
+    private void closeBarcelona2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeBarcelona2MouseClicked
+        try {
+            barcelonaAirport.closeRunway(1);
+            closeBarcelona2.setEnabled(false);
+            openBarcelona2.setEnabled(true);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_closeBarcelona2MouseClicked
+
+    private void openBarcelona2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBarcelona2MouseClicked
+        try {
+            barcelonaAirport.openRunway(1);
+            closeBarcelona2.setEnabled(true);
+            openBarcelona2.setEnabled(false);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_openBarcelona2MouseClicked
+
+    private void closeBarcelona3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeBarcelona3MouseClicked
+        try {
+            barcelonaAirport.closeRunway(2);
+            closeBarcelona3.setEnabled(false);
+            openBarcelona3.setEnabled(true);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_closeBarcelona3MouseClicked
+
+    private void openBarcelona3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBarcelona3MouseClicked
+        try {
+            barcelonaAirport.openRunway(2);
+            closeBarcelona3.setEnabled(true);
+            openBarcelona3.setEnabled(false);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_openBarcelona3MouseClicked
+
+    private void closeBarcelona4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeBarcelona4MouseClicked
+        try {
+            barcelonaAirport.closeRunway(3);
+            closeBarcelona4.setEnabled(false);
+            openBarcelona4.setEnabled(true);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_closeBarcelona4MouseClicked
+
+    private void openBarcelona4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBarcelona4MouseClicked
+        try {
+            barcelonaAirport.openRunway(3);
+            closeBarcelona4.setEnabled(true);
+            openBarcelona4.setEnabled(false);
+        } catch (RemoteException e) {
+        }
+    }//GEN-LAST:event_openBarcelona4MouseClicked
     public void startClient() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
                     // Make the UserInterface visible.
                     setVisible(true);
+
+                    // Closes the program gracefully.
+                    setDefaultCloseOperation(UserInterface.EXIT_ON_CLOSE);
+                    
                     // Perform periodic updates on the JLabel using SwingUtilities.invokeLater()
                     Timer timer = new Timer(20, e -> {
                         try {
@@ -395,9 +634,6 @@ public class Client extends javax.swing.JFrame {
                     });
 
                     timer.start();
-
-                    // Closes the program gracefully.
-                    setDefaultCloseOperation(UserInterface.EXIT_ON_CLOSE);
                 } catch (Exception e) {
 
                 }
@@ -406,7 +642,6 @@ public class Client extends javax.swing.JFrame {
     }
 
     public void update() throws RemoteException {
-        System.out.println("BRUH");
         setMadridCurrentPassengers();
         setMadridHangar();
         setMadridMaintenance();
@@ -493,22 +728,14 @@ public class Client extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JButton closeBarcelona1;
+    private javax.swing.JButton closeBarcelona2;
+    private javax.swing.JButton closeBarcelona3;
+    private javax.swing.JButton closeBarcelona4;
+    private javax.swing.JButton closeMadrid1;
+    private javax.swing.JButton closeMadrid2;
+    private javax.swing.JButton closeMadrid3;
+    private javax.swing.JButton closeMadrid4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel labelBarcelonaAirport;
@@ -533,6 +760,14 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JLabel labelTaxiMadrid7;
     private javax.swing.JLabel labelTaxiMadrid8;
     private javax.swing.JLabel labelTaxiMadrid9;
+    private javax.swing.JButton openBarcelona1;
+    private javax.swing.JButton openBarcelona2;
+    private javax.swing.JButton openBarcelona3;
+    private javax.swing.JButton openBarcelona4;
+    private javax.swing.JButton openMadrid1;
+    private javax.swing.JButton openMadrid2;
+    private javax.swing.JButton openMadrid3;
+    private javax.swing.JButton openMadrid4;
     private javax.swing.JTextField updaterAirwayBarcelona;
     private javax.swing.JTextField updaterAirwayMadrid;
     private javax.swing.JFormattedTextField updaterBarcelonaHangar;
