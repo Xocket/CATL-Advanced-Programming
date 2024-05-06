@@ -2,11 +2,13 @@
 package com.catl.code;
 
 // Importing classes.
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantLock;
 
+// Airplane class implemented as a thread. Models the airplane lifecycle behavior.
 public class Airplane implements Runnable {
 
     private final PauseControl pauseControl;
@@ -67,60 +69,57 @@ public class Airplane implements Runnable {
         this.timesFlown = 0;
     }
 
+    public void runAction(Runnable action) {
+        action.run();
+        pauseControl.checkPaused();
+    }
+
     @Override
     public void run() {
-        pauseControl.checkPaused();
-        accessHangar();
-        pauseControl.checkPaused();
-        accessParkingArea();
-        pauseControl.checkPaused();
-        processBoarding();
-        pauseControl.checkPaused();
-        accessTaxiArea();
-        pauseControl.checkPaused();
-        accessRunway();
-        pauseControl.checkPaused();
-        takeOff();
-        pauseControl.checkPaused();
-        fly();
-        pauseControl.checkPaused();
-        land();
-        pauseControl.checkPaused();
-        accessTaxiArea();
-        pauseControl.checkPaused();
-        processDisembark();
-        pauseControl.checkPaused();
-        accessParkingArea();
-        pauseControl.checkPaused();
-        //getInspection();
-        //pauseControl.checkPaused();
-
-        try {
-            Thread.sleep(100000);
-        } catch (InterruptedException e) {
+        while (true) {
+            runAction(this::accessHangar);
+            runAction(this::accessParkingArea);
+            runAction(this::processBoarding);
+            runAction(this::accessTaxiArea);
+            runAction(this::accessRunway);
+            runAction(this::takeOff);
+            runAction(this::fly);
+            runAction(this::land);
+            runAction(this::accessTaxiArea);
+            runAction(this::processDisembark);
+            runAction(this::accessParkingArea);
+            runAction(this::getInspection);
+            runAction(this::preconfigurationFlight);
         }
+
     }
 
     private void accessHangar() {
-        // Print in console.
-        System.out.println("Airplane " + this.getID() + " with occupancy " + this.getOccupancy() + " entered the " + getCurrentAirport().getAirportName() + " Hangar.");
-        // Log event.
-        log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " with occupancy " + this.getOccupancy() + " entered the " + getCurrentAirport().getAirportName() + " Hangar.");
 
-        if (isBorn) {
-            // If the airplane is born, it accesses the hangar and skips the sleep.
-            this.getCurrentAirport().getHangar().addAirplane(this);
-        } else {
+        if (!isBorn) {
+            int decision = ThreadLocalRandom.current().nextInt(2); // Generates a random number 0 or 1
             // If the airplane is not born, there is a 50% chance it accesses the hangar and sleeps.
-            if (Math.random() < 0.5) {
+            if (decision == 0) {
+                this.getCurrentAirport().getMaintenanceHall().removeAirplane(this);
                 this.getCurrentAirport().getHangar().addAirplane(this);
+                // Print in console.
+                System.out.println("Airplane " + this.getID() + " with occupancy " + this.getOccupancy() + " entered the " + getCurrentAirport().getAirportName() + " Hangar to SLEEP.");
+                // Log event.
+                log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " with occupancy " + this.getOccupancy() + " entered the " + getCurrentAirport().getAirportName() + " Hangar TO SLEEP.");
                 try {
                     Thread.sleep(ThreadLocalRandom.current().nextInt(15000, 30001));
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+
                 }
             }
-            // After the sleep or skip, set isBorn to false.
+
+        } else {
+            // If the airplane is born, it accesses the hangar and skips the sleep.
+            this.getCurrentAirport().getHangar().addAirplane(this);
+            // Print in console.
+            System.out.println("Airplane " + this.getID() + " with occupancy " + this.getOccupancy() + " entered the " + getCurrentAirport().getAirportName() + " Hangar.");
+            // Log event.
+            log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " with occupancy " + this.getOccupancy() + " entered the " + getCurrentAirport().getAirportName() + " Hangar.");
             isBorn = false;
         }
     }
@@ -128,7 +127,8 @@ public class Airplane implements Runnable {
     private void accessParkingArea() {
 
         if (!landing) {
-            this.getCurrentAirport().getParkingArea().addAirplane(this.getCurrentAirport().getHangar().removeAirplane(this));
+            this.getCurrentAirport().getHangar().removeAirplane(this);
+            this.getCurrentAirport().getParkingArea().addAirplane(this);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -148,11 +148,9 @@ public class Airplane implements Runnable {
 
             try {
                 Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
-            } catch (InterruptedException e) {
-
+            } catch (Exception e) {
             }
 
-            getInspection();
         }
 
     }
@@ -219,7 +217,9 @@ public class Airplane implements Runnable {
     }
 
     private void accessTaxiArea() {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         currentAirport.getTaxiArea().addAirplane(this);
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         System.out.println("Airplane " + getID() + " has entered the " + this.getCurrentAirport().getAirportName() + " airport Taxi Area.");
 
         if (!landing) {
@@ -232,8 +232,9 @@ public class Airplane implements Runnable {
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Performing pre-flight checks.");
             }
+
         } else {
-            this.processDisembark();
+            System.out.println(getID() + "Requesting boarding gate.");
         }
 
     }
@@ -399,21 +400,31 @@ public class Airplane implements Runnable {
             // Add the airplane to the maintenance hall queue
             this.getCurrentAirport().getMaintenanceHall().addAirplane(this);
 
-            // Only remove the airplane from the parking area if it gets past the .put() method
-            this.getCurrentAirport().getParkingArea().removeAirplane(this);
-
             // Perform the inspection
             if (deepInspection) {
                 // Deep inspection takes a random time between 5 and 10 seconds
-                Thread.sleep((int) (Math.random() * ((10000 - 5000) + 1)) + 5000);
+                System.out.println("DEEP INSPECTION BROS");
+                Thread.sleep(ThreadLocalRandom.current().nextInt(5000, 10001));
             } else {
                 // Quick check takes a random time between 1 and 5 seconds
-                Thread.sleep((int) (Math.random() * ((5000 - 1000) + 1)) + 1000);
+                System.out.println("SMALL INSPECTION BROS.");
+                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+
             }
+
+            this.getCurrentAirport().getMaintenanceHall().removeAirplane(this);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void preconfigurationFlight() {
+        landing = false;
+        embarkDisembark++;
+        takeOffLand++;
+        System.out.println("Airplane is ready to FLY AGAIN PAEAN.");
+
     }
 
     private String getRandomLetters() {

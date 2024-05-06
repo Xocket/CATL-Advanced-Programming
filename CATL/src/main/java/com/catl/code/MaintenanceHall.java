@@ -20,6 +20,8 @@ public class MaintenanceHall {
     public synchronized void addAirplane(Airplane airplane) {
         try {
             airplaneQueue.put(airplane);
+            airplane.getCurrentAirport().getParkingArea().removeAirplane(airplane);
+
             accumulativeNumberAirplanes.incrementAndGet();
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -28,12 +30,11 @@ public class MaintenanceHall {
     }
 
     // Method to remove an airplane from the maintenance hall.
-    public Airplane removeAirplane() {
+    public void removeAirplane(Airplane airplane) {
         try {
-            return airplaneQueue.take();
-        } catch (InterruptedException e) {
+            airplaneQueue.remove(airplane);
+        } catch (Exception e) {
             System.out.println("ERROR - Removing airplane from Maintenance Hall.");
-            return null;
         }
     }
 
