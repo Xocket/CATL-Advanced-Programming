@@ -24,7 +24,7 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
 
     // A semaphore to protect the runways array.
     private final Semaphore semaphoreR;
-    // An array of locks to protect each individual BoardingGate.
+    // An array of locks to protect each individual Runway.
     private final ReentrantLock[] locksR;
 
     // Airport class constructor.
