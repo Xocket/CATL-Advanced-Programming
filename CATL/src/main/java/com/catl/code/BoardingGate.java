@@ -1,16 +1,22 @@
 // Package declaration.
 package com.catl.code;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class BoardingGate {
 
     private final int gateNumber;
 
     private Airplane airplane;
     private String airplaneStatus;
+    private final String type;
+    private AtomicBoolean isAvailable;
 
-    public BoardingGate(int gateNumber) {
+    public BoardingGate(int gateNumber, String type) {
         this.gateNumber = gateNumber;
         this.airplane = null;
+        this.type = type;
+        this.isAvailable = new AtomicBoolean(true);
     }
 
     public int getGateNumber() {
@@ -41,6 +47,14 @@ public class BoardingGate {
 
     public void setAirplaneStatusNull() {
         airplaneStatus = "";
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public AtomicBoolean getIsAvailable() {
+        return isAvailable;
     }
 
 }

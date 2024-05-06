@@ -2,7 +2,6 @@
 package com.catl.code;
 
 // Importing classes.
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -156,6 +155,56 @@ public class Airplane implements Runnable {
 
     }
 
+    public synchronized void processBoarding() {
+        BlockingQueue queue = this.getCurrentAirport().getParkingArea().getAirplaneQueue();
+        try {
+            while (!this.equals(queue.peek()) && !this.getCurrentAirport().gateIsAvailableExceptLast()) {
+                wait();
+            }
+            System.out.println("LETS GO");
+            // Proceed with boarding
+            ReentrantLock[] locks = this.getCurrentAirport().getLocksBG();
+            for (int i = 0; i < locks.length - 1; i++) {
+                if (locks[i].tryLock()) {
+                    try {
+                        this.getCurrentAirport().getParkingArea().getAirplaneList().remove(this);
+                        notifyAll();
+                        this.getCurrentAirport().getBoardingGates(i).getIsAvailable().set(false);
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
+
+                        for (int j = 0; j < 3; j++) {
+                            // Wait if paused.
+                            pauseControl.checkPaused();
+
+                            this.addPassengers(this.getCurrentAirport().offloadPassengers(this.getCapacity() - this.getNumPassengers()));
+                            this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
+                            Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
+
+                            if (this.getCapacity() == this.getNumPassengers()) {
+                                break;
+                            } else {
+                                Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+                            }
+                        }
+
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatusNull();
+
+                        // Notify all after acquiring the lock
+                    } finally {
+                        // Ensure the lock is released and the gate is available for others
+                        locks[i].unlock();
+                        this.getCurrentAirport().getBoardingGates(i).getIsAvailable().set(true);
+
+                    }
+                    break; // Exit the loop once a lock is acquired and processed
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
     private void processBoarding() {
         Semaphore semaphore = this.getCurrentAirport().getSemaphoreBG();
         ReentrantLock[] locks = this.getCurrentAirport().getLocksBG();
@@ -216,7 +265,7 @@ public class Airplane implements Runnable {
         }
 
     }
-
+     */
     private void accessTaxiArea() {
         currentAirport.getTaxiArea().addAirplane(this);
         System.out.println("Airplane " + getID() + " has entered the " + this.getCurrentAirport().getAirportName() + " airport Taxi Area.");
@@ -369,6 +418,48 @@ public class Airplane implements Runnable {
         }
     }
      */
+    private synchronized void processDisembark() {
+        try {
+            while (!this.getCurrentAirport().gateIsAvailableExceptFirst()) {
+                wait();
+            }
+            // Proceed with boarding
+            ReentrantLock[] locks = this.getCurrentAirport().getLocksBG();
+            for (int i = 1; i < locks.length; i++) {
+                if (locks[i].tryLock()) {
+                    try {
+                        notifyAll();
+                        this.currentAirport.getTaxiArea().removeAirplane(this);
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
+
+                        // Sleep for 3-5 seconds to simulate the airplane getting to the boarding gate.
+                        Thread.sleep(ThreadLocalRandom.current().nextInt(3000, 5001));
+
+                        // Disembark all passengers.
+                        this.getCurrentAirport().addPassengers(this.getNumPassengers());
+                        this.numPassengers = 0;
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
+
+                        // Sleep for 1-5 seconds to simulate the transfer of all passengers to the airport.
+                        Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
+
+                        this.getCurrentAirport().getBoardingGates(i).setAirplaneStatusNull();
+
+                        // Notify all after acquiring the lock
+                    } finally {
+                        // Ensure the lock is released and the gate is available for others
+                        locks[i].unlock();
+                        this.getCurrentAirport().getBoardingGates(i).getIsAvailable().set(true);
+                    }
+                    break; // Exit the loop once a lock is acquired and processed
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
     private void processDisembark() {
         Semaphore semaphore = this.getCurrentAirport().getSemaphoreBG();
         ReentrantLock[] locks = this.getCurrentAirport().getLocksBG();
@@ -413,6 +504,7 @@ public class Airplane implements Runnable {
         }
     }
 
+     */
     public void getInspection() {
         boolean deepInspection = false;
         if (timesFlown % 15 == 0) {

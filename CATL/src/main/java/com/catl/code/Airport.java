@@ -9,7 +9,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 // Airport class which contains all the zones and methods for airplanes to navigate them.
@@ -50,7 +49,16 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
 
         // Initialize each BoardingGate object and its associated lock.
         for (int i = 0; i < 6; i++) {
-            this.boardingGates[i] = new BoardingGate(i);
+            String type;
+            type = switch (i) {
+                case 0 ->
+                    "takeoff";
+                case 5 ->
+                    "landing";
+                default ->
+                    "both";
+            };
+            this.boardingGates[i] = new BoardingGate(i, type);
             this.locksBG[i] = new ReentrantLock();
         }
 
@@ -68,6 +76,8 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
             runways[i] = new Runway(i); // Populate the array
             openRunways.add(runways[i]); // Add runways to the queue
         }
+
+        this.lockBoardingGates = new ReentrantLock();
     }
 
     private final AtomicBoolean[] runwayStatus; // Array to keep track of runway statuses
@@ -85,6 +95,8 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
 
     private AtomicInteger currentPassengers = new AtomicInteger(0);
     private AtomicInteger totalPassengers = new AtomicInteger(0);
+
+    private final ReentrantLock lockBoardingGates;
 
     // Method to add passengers.
     public void addPassengers(int passengers) {
@@ -236,6 +248,34 @@ public class Airport extends UnicastRemoteObject implements AirportInterface {
 
     public AtomicBoolean[] getRunwayStatusArray() {
         return runwayStatus;
+    }
+
+    public boolean gateIsAvailableExceptLast() {
+        lockBoardingGates.lock();
+        try {
+            for (int i = 0; i < boardingGates.length - 1; i++) {
+                if (boardingGates[i].getIsAvailable().get()) {
+                    return true; // At least one gate is available
+                }
+            }
+            return false; // No gate is available
+        } finally {
+            lockBoardingGates.unlock();
+        }
+    }
+
+    public boolean gateIsAvailableExceptFirst() {
+        lockBoardingGates.lock();
+        try {
+            for (int i = 1; i < boardingGates.length; i++) {
+                if (boardingGates[i].getIsAvailable().get()) {
+                    return true; // At least one gate is available
+                }
+            }
+            return false; // No gate is available
+        } finally {
+            lockBoardingGates.unlock();
+        }
     }
 
 }
