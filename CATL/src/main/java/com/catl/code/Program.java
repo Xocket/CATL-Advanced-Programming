@@ -3,13 +3,18 @@ package com.catl.code;
 
 // Importing classes.
 import com.catl.ui.UserInterface;
+import com.catl.ui.Client;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 // The Program class contains the execution code for the program.
 public class Program {
 
     // The run method contains the Program logic.
-    public void run() {
+    public void run() throws RemoteException {
         // Create Log object to store events.
         Log log = new Log();
 
@@ -44,5 +49,22 @@ public class Program {
         // Create a new thread with the instance of AirplaneDispatcher and start it.
         Thread airplaneDispatcherThread = new Thread(airplaneDispatcher);
         airplaneDispatcherThread.start();
+
+        // Set up a Remote Method Invocation (RMI) server.
+        System.out.println("damn bruh");
+        try {
+            Registry reg = LocateRegistry.createRegistry(1099);
+            // Rebind to these names to the airports.
+            Naming.rebind("//localhost/madridAirport", madridAirport);
+            Naming.rebind("//localhost/barcelonaAirport", barcelonaAirport);
+        } catch (Exception e) {
+            System.err.println("Failed to set up the RMI server.");
+        }
+        System.out.println("damn bruh");
+
+        // Initialize a Client object and start the UI.
+        Client client = new Client();
+        client.startClient();
     }
+
 }

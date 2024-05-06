@@ -29,7 +29,7 @@ public final class PauseControl {
             try {
                 wait();
             } catch (InterruptedException e) {
-                
+
             }
 
         }

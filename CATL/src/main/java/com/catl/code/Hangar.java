@@ -11,16 +11,11 @@ public class Hangar {
     private ArrayList<Airplane> airplaneList = new ArrayList<>();
     private ReentrantLock lock = new ReentrantLock();
 
-    private AtomicInteger accumulativeNumberAirplanes = new AtomicInteger(0);
-    private AtomicInteger maxSize = new AtomicInteger(0);
-
     // Add an airplane to the Hangar.
     public void addAirplane(Airplane airplane) {
         lock.lock();
         try {
             airplaneList.add(airplane);
-            accumulativeNumberAirplanes.incrementAndGet();
-            maxSize.set(Math.max(maxSize.get(), airplaneList.size()));
         } finally {
             lock.unlock();
         }
@@ -38,16 +33,6 @@ public class Hangar {
         } finally {
             lock.unlock();
         }
-    }
-
-    // Get the number of Airplanes added in total.
-    public int getTotalAirplanes() {
-        return accumulativeNumberAirplanes.get();
-    }
-
-    // Get the maximum number of elements in the list at once.
-    public int getMaxSize() {
-        return maxSize.get();
     }
 
     // Returns true if the object that calls it is at the head of the list.
@@ -80,5 +65,16 @@ public class Hangar {
 
     public ArrayList<Airplane> getAirplaneList() {
         return airplaneList;
+    }
+
+    public int getNumberAirplanes() {
+        int numAirplanes;
+        lock.lock();
+        try {
+            numAirplanes = this.getAirplaneList().size();
+        } finally {
+            lock.unlock();
+        }
+        return numAirplanes;
     }
 }

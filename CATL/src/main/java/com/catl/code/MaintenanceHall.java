@@ -55,4 +55,8 @@ public class MaintenanceHall {
 
         return sb.toString();
     }
+
+    public int getNumberAirplanes() {
+        return airplaneQueue.size();
+    }
 }

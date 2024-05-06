@@ -2,12 +2,14 @@
 package com.catl.code;
 
 // Importing classes.
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 // Airport class which contains all the zones and methods for airplanes to navigate them.
-public class Airport {
+public class Airport extends UnicastRemoteObject implements AirportInterface {
 
     // Create an array of 6 BoardingGate objects.
     private final BoardingGate[] boardingGates;
@@ -26,7 +28,7 @@ public class Airport {
     private final ReentrantLock[] locksR;
 
     // Airport class constructor.
-    public Airport(String airportName) {
+    public Airport(String airportName) throws RemoteException {
 
         // Initialize the airport name.
         this.airportName = airportName;
@@ -160,5 +162,35 @@ public class Airport {
 
     public MaintenanceHall getMaintenanceHall() {
         return maintenanceHall;
+    }
+
+    @Override
+    public AtomicInteger getNumPassengers() throws RemoteException {
+        return currentPassengers;
+    }
+
+    @Override
+    public int getNumAirplanesInHangar() throws RemoteException {
+        return this.getHangar().getNumberAirplanes();
+    }
+
+    @Override
+    public int getNumAirplanesInMaintenance() throws RemoteException {
+        return this.getMaintenanceHall().getNumberAirplanes();
+    }
+
+    @Override
+    public int getNumAirplanesInParking() throws RemoteException {
+        return this.getParkingArea().getNumberAirplanes();
+    }
+
+    @Override
+    public int getNumAirplanesInTaxi() throws RemoteException {
+        return this.getTaxiArea().getNumberAirplanes();
+    }
+
+    @Override
+    public String airwayStatus() throws RemoteException {
+        return this.getAirway().getStatus();
     }
 }

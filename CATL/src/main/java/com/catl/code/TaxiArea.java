@@ -67,4 +67,15 @@ public class TaxiArea {
     public ArrayList<Airplane> getAirplaneList() {
         return airplaneList;
     }
+
+    public int getNumberAirplanes() {
+        int numAirplanes;
+        lock.lock();
+        try {
+            numAirplanes = this.getAirplaneList().size();
+        } finally {
+            lock.unlock();
+        }
+        return numAirplanes;
+    }
 }
