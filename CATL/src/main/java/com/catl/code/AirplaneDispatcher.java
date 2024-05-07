@@ -2,8 +2,6 @@
 package com.catl.code;
 
 // Importing classes.
-import java.util.concurrent.ThreadLocalRandom;
-
 public class AirplaneDispatcher implements Runnable {
 
     private final Log log;
@@ -40,12 +38,13 @@ public class AirplaneDispatcher implements Runnable {
                 airplaneThread.start();
             }
 
+            /*
             try {
                 Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 3001));
             } catch (InterruptedException e) {
                 System.out.println("ERROR - Dispatching airplanes.");
             }
-
+             */
         }
     }
 

@@ -24,6 +24,7 @@ public class BusDispatcher implements Runnable {
     }
 
     public void dispatchBuses() {
+        /*
         for (int i = 1; i <= 4000; i++) {
 
             // Wait if paused.
@@ -51,6 +52,7 @@ public class BusDispatcher implements Runnable {
                 System.out.println("ERROR - Dispatching buses.");
             }
         }
+         */
     }
 
     public Airport getMadridAirport() {
