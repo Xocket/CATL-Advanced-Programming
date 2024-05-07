@@ -24,7 +24,7 @@ public class AirplaneDispatcher implements Runnable {
     }
 
     public void dispatchAirplanes() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 50; i++) {
 
             // Wait if paused.
             pauseControl.checkPaused();

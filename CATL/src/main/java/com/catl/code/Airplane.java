@@ -4,7 +4,6 @@ package com.catl.code;
 // Importing classes.
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -85,7 +84,6 @@ public class Airplane implements Runnable {
             runAction(this::takeOff);
             runAction(this::fly);
             runAction(this::land);
-            runAction(this::accessTaxiArea);
             runAction(this::processDisembark);
             runAction(this::accessParkingArea);
             runAction(this::getInspection);
@@ -128,7 +126,6 @@ public class Airplane implements Runnable {
         if (!landing) {
             this.getCurrentAirport().getHangar().removeAirplane(this);
             this.getCurrentAirport().getParkingArea().addAirplane(this);
-            
             // Print in console.
             System.out.println("Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area.");
             // Log event.
@@ -136,6 +133,8 @@ public class Airplane implements Runnable {
 
         } else {
             // Print in console.
+            this.getCurrentAirport().getParkingArea().addAirplane(this);
+
             System.out.println("Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area and is performing checks.");
             // Log event.
             log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " entered the " + getCurrentAirport().getAirportName() + " Parking Area and is performing checks.");
@@ -144,7 +143,6 @@ public class Airplane implements Runnable {
                 Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
             } catch (Exception e) {
             }
-
         }
 
     }
@@ -153,9 +151,7 @@ public class Airplane implements Runnable {
         BlockingQueue queue = this.getCurrentAirport().getParkingArea().getAirplaneQueue();
         try {
             while (!this.equals(queue.peek()) && !this.getCurrentAirport().gateIsAvailableExceptLast()) {
-                System.out.println(this + "is XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 wait();
-                System.out.println(this + "is NO LONGER WAITING XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             }
             System.out.println("Airplane " + this.getID() + " looking to board.");
             log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " looking to board.");
@@ -173,8 +169,6 @@ public class Airplane implements Runnable {
                         this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
 
                         log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " boarding passengers.");
-
-                        notifyAll();
 
                         for (int j = 0; j < 3; j++) {
                             // Wait if paused.
@@ -198,6 +192,7 @@ public class Airplane implements Runnable {
                         // Ensure the lock is released and the gate is available for others
                         locks[i].unlock();
                         this.getCurrentAirport().getBoardingGates(i).getIsAvailable().set(true);
+                        notifyAll();
 
                     }
                     break; // Exit the loop once a lock is acquired and processed
@@ -302,8 +297,10 @@ public class Airplane implements Runnable {
         Runway runway = null;
         try {
             runway = openRunways.take(); // Take a runway from the queue
-            this.getCurrentAirport().getRunway(runway.getRunwayNumber()).setAirplaneStatus(this);
+
             this.getCurrentAirport().getTaxiArea().removeAirplane(this);
+            this.getCurrentAirport().getRunway(runway.getRunwayNumber()).setAirplaneStatus(this);
+
             log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + getID() + " runway granted.");
 
             // Simulate pre-flight checks and takeoff
@@ -327,9 +324,11 @@ public class Airplane implements Runnable {
     }
 
     public void takeOff() {
+        this.getCurrentAirport().getAirway().addAirplane(this);
+
         System.out.println(this.getID() + " taking off towards " + this.getCurrentAirport().getAirportName() + " airport.");
         log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " taking off towards " + this.getCurrentAirport().getAirportName() + " airport.");
-        this.getCurrentAirport().getAirway().addAirplane(this);
+
         try {
             Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
         } catch (InterruptedException e) {
@@ -370,12 +369,13 @@ public class Airplane implements Runnable {
                 } else {
 
                     log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " landing at " + this.getCurrentAirport().getAirportName() + " airport.");
-                    this.getDestinationAirport().getAirway().removeAirplane(this);
                     this.getCurrentAirport().getRunway(runway.getRunwayNumber()).setAirplaneStatus(this);
+                    this.getDestinationAirport().getAirway().removeAirplane(this);
 
                     Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 5001));
 
                     this.getCurrentAirport().getRunway(runway.getRunwayNumber()).setAirplaneStatusNull();
+
                 }
             }
         } catch (InterruptedException e) {
@@ -386,6 +386,14 @@ public class Airplane implements Runnable {
             if (runway != null && runwayStatus[runway.getRunwayNumber()].get()) {
                 openRunways.add(runway);
             }
+        }
+
+        this.getCurrentAirport().getTaxiArea().addAirplane(this);
+
+        // Travel to the boarding gate.
+        try {
+            Thread.sleep(ThreadLocalRandom.current().nextInt(3000, 5001));
+        } catch (InterruptedException e) {
         }
     }
 
@@ -433,6 +441,7 @@ public class Airplane implements Runnable {
     }
      */
     private synchronized void processDisembark() {
+
         log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " looking to disembark...");
         try {
             while (!this.getCurrentAirport().gateIsAvailableExceptFirst()) {
@@ -444,10 +453,9 @@ public class Airplane implements Runnable {
                 if (locks[i].tryLock()) {
                     try {
                         log.logEvent(this.getCurrentAirport().getAirportName(), "Airplane " + this.getID() + " disembarking...");
-
-                        this.currentAirport.getTaxiArea().removeAirplane(this);
                         this.getCurrentAirport().getBoardingGates(i).setAirplaneStatus(this);
-                        notifyAll();
+                        this.currentAirport.getTaxiArea().removeAirplane(this);
+
                         // Sleep for 3-5 seconds to simulate the airplane getting to the boarding gate.
                         Thread.sleep(ThreadLocalRandom.current().nextInt(3000, 5001));
 
@@ -466,6 +474,7 @@ public class Airplane implements Runnable {
                         // Ensure the lock is released and the gate is available for others
                         locks[i].unlock();
                         this.getCurrentAirport().getBoardingGates(i).getIsAvailable().set(true);
+                        notifyAll();
                     }
                     break; // Exit the loop once a lock is acquired and processed
                 }
@@ -531,7 +540,6 @@ public class Airplane implements Runnable {
         try {
             // Add the airplane to the maintenance hall queue
             this.getCurrentAirport().getMaintenanceHall().addAirplane(this);
-            this.getCurrentAirport().getParkingArea().removeAirplane(this);
 
             // Perform the inspection
             if (deepInspection) {

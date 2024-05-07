@@ -4,6 +4,7 @@ package com.catl.code;
 // Importing classes.
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -30,7 +31,7 @@ public class MaintenanceHall {
         } catch (InterruptedException e) {
             System.out.println("ERROR - Adding airplane to Maintenance Hall.");
         } finally {
-            lock.lock();
+            lock.unlock();
         }
     }
 
@@ -38,8 +39,8 @@ public class MaintenanceHall {
     public void removeAirplane(Airplane airplane) {
         lock.lock();
         try {
-            airplaneQueue.remove(airplane);
             Thread.sleep(1000);
+            airplaneQueue.remove(airplane);
         } catch (Exception e) {
             System.out.println("ERROR - Removing airplane from Maintenance Hall.");
         } finally {

@@ -20,19 +20,14 @@ public class ParkingArea {
 
     // Add an airplane to the Parking Area.
     public void addAirplane(Airplane airplane) {
-
+        lock.lock();
         try {
             airplaneQueue.put(airplane);
-            lock.lock();
-            try {
-                airplaneList.add(airplane);
-            } finally {
-                lock.unlock();
-            }
-            accumulativeNumberAirplanes.incrementAndGet();
-            maxSize.set(Math.max(maxSize.get(), airplaneQueue.size()));
+            airplaneList.add(airplane);
         } catch (InterruptedException e) {
             System.out.println("ERROR - Adding airplane to Parking Area.");
+        } finally {
+            lock.unlock();
         }
     }
 
