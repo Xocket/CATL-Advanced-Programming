@@ -624,7 +624,7 @@ public class Client extends javax.swing.JFrame {
 
                     // Closes the program gracefully.
                     setDefaultCloseOperation(UserInterface.EXIT_ON_CLOSE);
-                    
+
                     // Perform periodic updates on the JLabel using SwingUtilities.invokeLater()
                     Timer timer = new Timer(20, e -> {
                         try {

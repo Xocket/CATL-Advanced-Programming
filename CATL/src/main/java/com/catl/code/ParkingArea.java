@@ -64,7 +64,7 @@ public class ParkingArea {
     }
 
     // Remove and returns an airplane from the head of the queue.
-    public Airplane removeAirplane() {
+    public Airplane removeAirplaneForInspection() {
         try {
             return airplaneQueue.take();
         } catch (InterruptedException e) {

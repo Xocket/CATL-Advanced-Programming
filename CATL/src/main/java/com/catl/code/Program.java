@@ -50,8 +50,12 @@ public class Program {
         Thread airplaneDispatcherThread = new Thread(airplaneDispatcher);
         airplaneDispatcherThread.start();
 
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+        }
+
         // Set up a Remote Method Invocation (RMI) server.
-        System.out.println("damn bruh");
         try {
             Registry reg = LocateRegistry.createRegistry(1099);
             // Rebind to these names to the airports.
@@ -60,7 +64,6 @@ public class Program {
         } catch (Exception e) {
             System.err.println("Failed to set up the RMI server.");
         }
-        System.out.println("damn bruh");
 
         // Initialize a Client object and start the UI.
         Client client = new Client();
